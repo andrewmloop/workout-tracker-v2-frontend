@@ -1,0 +1,28 @@
+.exercise-list-container {
+  /* Position */
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  /* Shape */
+  width: 100vw;
+  height: 100%;
+  border: 3px red solid;
+  /* Color */
+}
+
+.exercise-list-container > ul {
+  padding: 0;
+  margin: 0;
+}
+
+.list-item-container {
+  /* Position */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* Shape */
+  width: 100%;
+  height: 100%;
+  border: 2px yellow solid;
+}

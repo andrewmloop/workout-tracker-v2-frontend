@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import "./NavbarLink.css";
 
@@ -9,8 +9,8 @@ interface NavbarLinkProps {
 
 export default function NavbarLink(props: NavbarLinkProps) {
   return (
-    <Link className="navbar-link" to={props.to}>
+    <NavLink className="navbar-link" to={props.to}>
       {props.name}
-    </Link>
+    </NavLink>
   );
 }
