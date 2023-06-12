@@ -1,4 +1,4 @@
-.exercise-list-container {
+.exercise-search-container {
   /* Position */
   display: flex;
   flex-direction: column;
@@ -8,22 +8,31 @@
   width: 100vw;
   height: calc(100vh - 64px);
   border: 3px red solid;
+  /* Color */
+}
+
+.search-container {
+  width: 100%;
+}
+
+.search-container > input {
+  width: 100%;
+}
+
+.exercise-list-container {
+  /* Position */
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  z-index: 1;
+  /* Shape */
+  width: 100%;
   overflow-y: scroll;
   /* Color */
 }
 
-.exercise-list-container > ul {
-  padding: 0;
-  margin: 0;
-}
-
-.list-item-container {
-  /* Position */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  /* Shape */
+.exercise-container {
   width: 100%;
+
   border: 2px yellow solid;
 }

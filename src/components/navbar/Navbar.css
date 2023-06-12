@@ -10,6 +10,8 @@
   justify-content: space-evenly;
 
   border: 2px white solid;
+
+  z-index: 1000;
 }
 
 .link-container {

@@ -20,9 +20,9 @@ const router = createBrowserRouter([
       },
       {
         path: "/exercises",
-        element: ExerciseList(),
+        element: <ExerciseList />,
       },
-      { path: "/exercises/search", element: ExerciseSearch() },
+      { path: "/exercises/:muscle", element: <ExerciseSearch /> },
       {
         path: "/settings",
         element: <div>Settings</div>,

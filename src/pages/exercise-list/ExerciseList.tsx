@@ -5,26 +5,35 @@ export default function ExerciseList() {
   return (
     <div className="exercise-list-container">
       <ul>
-        <ListItem itemName="All Exercises" />
-        <ListItem itemName="Abdominals" />
-        <ListItem itemName="Arms" />
-        <ListItem itemName="Back" />
-        <ListItem itemName="Cardio" />
-        <ListItem itemName="Chest" />
-        <ListItem itemName="Legs" />
-        <ListItem itemName="Shoulders" />
-        <ListItem itemName="Stretching" />
+        <ListItem itemName="All Exercises" muscle="all" />
+        <ListItem itemName="Abdominals" muscle="abdominals" />
+        <ListItem itemName="Abductors" muscle="abductors" />
+        <ListItem itemName="Adductors" muscle="adductors" />
+        <ListItem itemName="Biceps" muscle="biceps" />
+        <ListItem itemName="Calves" muscle="calves" />
+        <ListItem itemName="Chest" muscle="chest" />
+        <ListItem itemName="Forearms" muscle="forearms" />
+        <ListItem itemName="Glutes" muscle="glutes" />
+        <ListItem itemName="Hamstrings" muscle="hamstrings" />
+        <ListItem itemName="Lats" muscle="lats" />
+        <ListItem itemName="Lower Back" muscle="lowerback" />
+        <ListItem itemName="Middle Back" muscle="middleback" />
+        <ListItem itemName="Neck" muscle="neck" />
+        <ListItem itemName="Quadriceps" muscle="quadriceps" />
+        <ListItem itemName="Shoulders" muscle="shoulders" />
+        <ListItem itemName="Traps" muscle="traps" />
+        <ListItem itemName="Triceps" muscle="triceps" />
       </ul>
     </div>
   );
 }
 
-type ListItemProps = { itemName: string };
+type ListItemProps = { itemName: string; muscle: string };
 
 function ListItem(props: ListItemProps) {
-  const { itemName } = props;
+  const { itemName, muscle } = props;
   return (
-    <Link to="/exercises/search" className="list-item-container">
+    <Link to={"/exercises/" + muscle} className="list-item-container">
       <p className="item-text">{itemName}</p>
       <div className="nav-arrow">--&gt;</div>
     </Link>
