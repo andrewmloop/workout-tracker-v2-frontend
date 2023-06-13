@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { ROUTES } from "../../utils/route-enums";
-import { ExerciseDto } from "../../entities/exercise";
+import { Link, useParams } from "react-router-dom";
+import { ROUTES } from "../../../utils/route-enums";
+import { ExerciseDto } from "../../../entities/exercise";
 import "./ExerciseSearch.css";
 
 export default function ExerciseSearch() {
@@ -57,19 +57,24 @@ export default function ExerciseSearch() {
             return e.name.toLowerCase().includes(debounceState.toLowerCase());
           })
           .map((e) => {
-            return <Exercise key={e._id} name={e.name} />;
+            return <Exercise key={e._id} exercise={e} />;
           })}
       </div>
     </div>
   );
 }
 
-type ExerciseProps = { name: string };
+type ExerciseProps = { exercise: ExerciseDto };
 function Exercise(props: ExerciseProps) {
-  const { name } = props;
+  const { exercise } = props;
+
   return (
-    <div className="exercise-container">
-      <div className="exercise-text">{name}</div>
-    </div>
+    <Link
+      to="/exercises/detail"
+      state={exercise}
+      className="exercise-container"
+    >
+      <div className="exercise-text">{exercise.name}</div>
+    </Link>
   );
 }

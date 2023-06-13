@@ -1,0 +1,13 @@
+.exercise-detail-container {
+  /* Position */
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  z-index: 1;
+  /* Shape */
+  width: 100vw;
+  height: calc(100vh - 64px);
+  border: 3px red solid;
+  overflow-y: scroll;
+  /* Color */
+}

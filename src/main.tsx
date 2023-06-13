@@ -4,8 +4,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App";
 import "./index.css";
-import ExerciseList from "./pages/exercise-list/ExerciseList";
-import ExerciseSearch from "./pages/exercise-search/ExerciseSearch";
+import ExerciseList from "./pages/exercises/exercise-list/ExerciseList";
+import ExerciseSearch from "./pages/exercises/exercise-search/ExerciseSearch";
+import ExerciseDetail from "./pages/exercises/exercise-detail/ExerciseDetail";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
         element: <ExerciseList />,
       },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
+      { path: "/exercises/detail", element: <ExerciseDetail /> },
       {
         path: "/settings",
         element: <div>Settings</div>,
