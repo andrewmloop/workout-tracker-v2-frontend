@@ -7,6 +7,7 @@ import "./index.css";
 import ExerciseList from "./pages/exercises/exercise-list/ExerciseList";
 import ExerciseSearch from "./pages/exercises/exercise-search/ExerciseSearch";
 import ExerciseDetail from "./pages/exercises/exercise-detail/ExerciseDetail";
+import { ExerciseProvider } from "./context/exercise-context";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -35,6 +36,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ExerciseProvider>
+      <RouterProvider router={router} />
+    </ExerciseProvider>
   </React.StrictMode>
 );
