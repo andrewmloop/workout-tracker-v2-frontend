@@ -1,0 +1,20 @@
+.top-nav-container {
+  width: 100vw;
+  height: 64px;
+
+  position: absolute;
+  top: 0;  
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 2px white solid;
+
+  z-index: 1000;
+}
+
+.back-button {
+  color: white;
+}

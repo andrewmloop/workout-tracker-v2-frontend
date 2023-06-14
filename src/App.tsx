@@ -5,6 +5,7 @@ import { useExerciseContext } from "./context/exercise-context";
 import { useEffect } from "react";
 import { ExerciseDto } from "./entities/exercise";
 import { ROUTES } from "./utils/route-enums";
+import TopNav from "./components/top-nav/TopNav";
 
 export default function App() {
   // Fetch exercise list on app open and store in context
@@ -38,7 +39,10 @@ export default function App() {
   // on each route change.
   return (
     <div className="app">
-      <Outlet />
+      <TopNav />
+      <div className="content-container">
+        <Outlet />
+      </div>
       <Navbar />
     </div>
   );
