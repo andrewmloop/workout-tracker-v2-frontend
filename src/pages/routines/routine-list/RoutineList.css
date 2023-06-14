@@ -1,0 +1,16 @@
+.routine-list-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.routine-list-buttons-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 2px yellow solid;
+}
