@@ -9,26 +9,23 @@ import ExerciseSearch from "./pages/exercises/exercise-search/ExerciseSearch";
 import ExerciseDetail from "./pages/exercises/exercise-detail/ExerciseDetail";
 import { ExerciseProvider } from "./context/exercise-context";
 import RoutineList from "./pages/routines/routine-list/RoutineList";
+import RoutineDetail from "./pages/routines/routine-detail/RoutineDetail";
+import SignIn from "./pages/auth/sign-in/SignIn";
 
 // Use child routes off "/" to render all child elements
 // through App element
 const router = createBrowserRouter([
+  { path: "/auth/signin", element: <SignIn /> },
   {
     path: "/",
     element: <App />,
     children: [
       { path: "/", element: <RoutineList /> },
-      { path: "/routines/detail" },
-      {
-        path: "/exercises",
-        element: <ExerciseList />,
-      },
+      { path: "/routines/detail", element: <RoutineDetail /> },
+      { path: "/exercises", element: <ExerciseList /> },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
       { path: "/exercises/detail", element: <ExerciseDetail /> },
-      {
-        path: "/settings",
-        element: <div>Settings</div>,
-      },
+      { path: "/settings", element: <div>Settings</div> },
     ],
   },
 ]);
