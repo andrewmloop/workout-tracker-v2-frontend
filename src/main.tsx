@@ -11,6 +11,7 @@ import { ExerciseProvider } from "./context/exercise-context";
 import RoutineList from "./pages/routines/routine-list/RoutineList";
 import RoutineDetail from "./pages/routines/routine-detail/RoutineDetail";
 import SignIn from "./pages/auth/sign-in/SignIn";
+import { UserProvider } from "./context/user-context";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <RoutineList /> },
+      { path: "/routines", element: <RoutineList /> },
       { path: "/routines/detail", element: <RoutineDetail /> },
       { path: "/exercises", element: <ExerciseList /> },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
@@ -33,7 +35,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ExerciseProvider>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </ExerciseProvider>
   </React.StrictMode>
 );

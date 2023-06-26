@@ -4,4 +4,6 @@ export interface UserDto {
   email: string;
   useLeftHand: boolean;
   useMetric: boolean;
+  createdAt: string;
+  updatedAt: string;
 }

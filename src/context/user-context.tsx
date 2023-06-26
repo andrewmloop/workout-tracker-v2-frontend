@@ -2,20 +2,20 @@ import { createContext, useContext, useState } from "react";
 import { UserDto } from "../entities/user";
 
 interface IUserContext {
-  user: UserDto | undefined;
-  setUser: (user: UserDto) => void;
+  userStore: UserDto | undefined;
+  setUserStore: (user: UserDto) => void;
 }
 
 const UserContext = createContext<IUserContext>({
-  user: undefined,
-  setUser: () => {},
+  userStore: undefined,
+  setUserStore: () => {},
 });
 
 export function UserProvider({ children }: any) {
-  const [user, setUser] = useState<UserDto>();
+  const [userStore, setUserStore] = useState<UserDto>();
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ userStore, setUserStore }}>
       {children}
     </UserContext.Provider>
   );

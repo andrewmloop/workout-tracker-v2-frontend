@@ -1,15 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { ROUTES } from "../../../utils/route-enums";
+import { useUserContext } from "../../../context/user-context";
+import { UserDto } from "../../../entities/user";
 
 export default function SignIn() {
+  const { setUserStore, userStore } = useUserContext();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     setError("");
 
     if (!validateEmail(email)) {
@@ -41,12 +48,11 @@ export default function SignIn() {
         credentials: "include",
       });
 
-      const data = await response.json();
-      console.log(data);
-
       if (response.ok) {
-        data;
-        // Redirect to routines pages
+        const data = await response.json();
+        const user: UserDto = data.user;
+        setUserStore(user);
+        navigate("/routines");
       } else {
         throw new Error("Invalid email or password");
       }
@@ -59,32 +65,32 @@ export default function SignIn() {
 
   return (
     <div className="sign-in-page-container">
-      <div className="sign-in-email-container">
-        <input
-          type="email"
-          className="sign-in-email-input"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="sign-in-password-container">
-        <input
-          type="password"
-          className="sign-in-password-input"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="sign-in-error-container">
-        {error.length > 0 && <p className="sign-in-error-text">{error}</p>}
-      </div>
-      <div className="sign-in-submit-container">
-        <button
-          type="submit"
-          className="sign-in-submit-button"
-          onClick={handleSubmit}
-        >
-          {loading ? "Loading..." : "Submit"}
-        </button>
-      </div>
+      <form onSubmit={(e) => handleSubmit(e)} className="sign-in-form">
+        <div className="sign-in-email-container">
+          <input
+            type="email"
+            autoComplete="username"
+            className="sign-in-email-input"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="sign-in-password-container">
+          <input
+            type="password"
+            autoComplete="current-password"
+            className="sign-in-password-input"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="sign-in-error-container">
+          {error.length > 0 && <p className="sign-in-error-text">{error}</p>}
+        </div>
+        <div className="sign-in-submit-container">
+          <button type="submit" className="sign-in-submit-button">
+            {loading ? "Loading..." : "Submit"}
+          </button>
+        </div>
+      </form>
       <div className="sign-up-link-container">
         Not a user? <Link to={"/auth/signup"}>Sign Up</Link>
       </div>
