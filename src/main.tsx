@@ -12,6 +12,7 @@ import RoutineList from "./pages/routines/routine-list/RoutineList";
 import RoutineDetail from "./pages/routines/routine-detail/RoutineDetail";
 import SignIn from "./pages/auth/sign-in/SignIn";
 import { UserProvider } from "./context/user-context";
+import AddRoutine from "./pages/routines/add-routine/AddRoutine";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <RoutineList /> },
       { path: "/routines", element: <RoutineList /> },
+      { path: "/routines/add", element: <AddRoutine /> },
       { path: "/routines/detail", element: <RoutineDetail /> },
       { path: "/exercises", element: <ExerciseList /> },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
