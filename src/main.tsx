@@ -14,6 +14,7 @@ import SignIn from "./pages/auth/sign-in/SignIn";
 import { UserProvider } from "./context/user-context";
 import AddRoutine from "./pages/routines/add-routine/AddRoutine";
 import SignUp from "./pages/auth/sign-up/SignUp";
+import Settings from "./pages/settings/Settings";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       { path: "/exercises", element: <ExerciseList /> },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
       { path: "/exercises/detail", element: <ExerciseDetail /> },
-      { path: "/settings", element: <div>Settings</div> },
+      { path: "/settings", element: <Settings /> },
     ],
   },
 ]);
