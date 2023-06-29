@@ -23,10 +23,16 @@ export default function RoutineList() {
 
       const data = await response.json();
 
-      console.log(data);
-      setRoutineList(data);
-    } catch (error) {
-      console.log(error);
+      if (response.ok) {
+        console.log(data);
+        setRoutineList(data);
+      } else if (response.status === 401) {
+        navigate("/auth/signin");
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -44,7 +50,9 @@ export default function RoutineList() {
       </div>
       <div className="routine-list-container">
         {routineList.length > 0 &&
-          routineList.map((routine) => <RoutineItem routine={routine} />)}
+          routineList.map((routine) => (
+            <RoutineItem routine={routine} key={routine._id} />
+          ))}
       </div>
     </div>
   );
@@ -57,7 +65,6 @@ function RoutineItem(props: RoutineItemProps) {
       to={"/routines/detail"}
       state={props.routine}
       className="routine-container"
-      key={props.routine._id}
     >
       <p className="routine-name">{props.routine.name}</p>
     </Link>
