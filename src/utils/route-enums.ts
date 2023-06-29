@@ -3,4 +3,5 @@ export enum ROUTES {
   EXERCISE_MUSCLE = "exercise/muscle/",
   ROUTINE = "routine/",
   SIGN_IN = "auth/signin",
+  USER = "user/",
 }

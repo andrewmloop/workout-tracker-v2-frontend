@@ -1,0 +1,19 @@
+.sign-up-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.sign-up-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.sign-up-error-container {
+  height: 1rem;
+}
+
+.sign-up-error-text {
+  color: red;
+}

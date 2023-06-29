@@ -13,11 +13,13 @@ import RoutineDetail from "./pages/routines/routine-detail/RoutineDetail";
 import SignIn from "./pages/auth/sign-in/SignIn";
 import { UserProvider } from "./context/user-context";
 import AddRoutine from "./pages/routines/add-routine/AddRoutine";
+import SignUp from "./pages/auth/sign-up/SignUp";
 
 // Use child routes off "/" to render all child elements
 // through App element
 const router = createBrowserRouter([
   { path: "/auth/signin", element: <SignIn /> },
+  { path: "/auth/signup", element: <SignUp /> },
   {
     path: "/",
     element: <App />,

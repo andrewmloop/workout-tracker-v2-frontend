@@ -6,7 +6,7 @@ import { useUserContext } from "../../../context/user-context";
 import { UserDto } from "../../../entities/user";
 
 export default function SignIn() {
-  const { setUserStore, userStore } = useUserContext();
+  const { setUserStore } = useUserContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
