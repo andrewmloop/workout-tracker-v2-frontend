@@ -3,6 +3,7 @@ import "./RoutineDetail.css";
 import { RoutineDto } from "../../../entities/routine";
 import { useEffect, useState } from "react";
 import { useExerciseContext } from "../../../context/exercise-context";
+import TopNav from "../../../components/top-nav/TopNav";
 
 interface RoutineItemState {
   exerciseId: string;
@@ -46,25 +47,28 @@ export default function RoutineDetail() {
   };
 
   return (
-    <div className="routine-detail-page-container">
-      <div className="routine-description-container">
-        <p className="routine-description">{routine.description}</p>
+    <>
+      <TopNav showBackButton={true} navText={routine.name} />
+      <div className="routine-detail page-container">
+        <div className="routine-description-container">
+          <p className="routine-description">{routine.description}</p>
+        </div>
+        <div className="routine-exercise-list-container">
+          {routineExerciseList.length > 0 &&
+            routineExerciseList.map((exercise) => {
+              return (
+                <RoutineExercise
+                  key={exercise.exerciseId}
+                  exerciseId={exercise.exerciseId}
+                  exerciseName={exercise.exerciseName}
+                  sets={exercise.sets}
+                  reps={exercise.reps}
+                />
+              );
+            })}
+        </div>
       </div>
-      <div className="routine-exercise-list-container">
-        {routineExerciseList.length > 0 &&
-          routineExerciseList.map((exercise) => {
-            return (
-              <RoutineExercise
-                key={exercise.exerciseId}
-                exerciseId={exercise.exerciseId}
-                exerciseName={exercise.exerciseName}
-                sets={exercise.sets}
-                reps={exercise.reps}
-              />
-            );
-          })}
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -84,15 +88,18 @@ function RoutineExercise(props: RoutineItemState) {
         defaultValue={props.reps}
         className="reps-input"
       />
-      <LogButton exerciseId={props.exerciseId} />
+      <LogButton
+        exerciseId={props.exerciseId}
+        exerciseName={props.exerciseName}
+      />
     </div>
   );
 }
 
-type LogButtonPropType = { exerciseId: string };
+type LogButtonPropType = { exerciseId: string; exerciseName: string };
 function LogButton(props: LogButtonPropType) {
   return (
-    <Link to={"/log"} state={props.exerciseId} className="log-button">
+    <Link to={"/log"} state={props} className="log-button">
       Log
     </Link>
   );

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Settings.css";
 import { ROUTES } from "../../utils/route-enums";
+import TopNav from "../../components/top-nav/TopNav";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Settings() {
         credentials: "include",
       });
 
-      if (response.ok) {
+      if (response.ok || response.status === 401) {
         navigate("/auth/signin");
       } else {
         throw new Error("Unable to sign out");
@@ -26,10 +27,13 @@ export default function Settings() {
   };
 
   return (
-    <div className="settings-page-container">
-      <button onClick={handleSignOut} className="log-out-button">
-        Sign Out
-      </button>
-    </div>
+    <>
+      <TopNav showBackButton={true} navText="Settings" />
+      <div className="settings-page page-container">
+        <button onClick={handleSignOut} className="log-out-button">
+          Sign Out
+        </button>
+      </div>
+    </>
   );
 }

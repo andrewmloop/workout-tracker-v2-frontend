@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ROUTES } from "../../../utils/route-enums";
 import { useNavigate } from "react-router-dom";
 import "./AddRoutine.css";
+import TopNav from "../../../components/top-nav/TopNav";
 
 export default function AddRoutine() {
   const [name, setName] = useState("");
@@ -53,20 +54,23 @@ export default function AddRoutine() {
   };
 
   return (
-    <div className="add-routine-page-container">
-      <input
-        type="text"
-        className="routine-name-input"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <button
-        type="submit"
-        onClick={handleSubmit}
-        className="routine-name-submit-button"
-      >
-        {loading ? "Loading..." : "Submit"}
-      </button>
-      {error.length > 0 && <p className="add-routine-error-text">{error}</p>}
-    </div>
+    <>
+      <TopNav showBackButton={true} navText="Add Routine" />
+      <div className="add-routine-page page-container">
+        <input
+          type="text"
+          className="routine-name-input"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="routine-name-submit-button"
+        >
+          {loading ? "Loading..." : "Submit"}
+        </button>
+        {error.length > 0 && <p className="add-routine-error-text">{error}</p>}
+      </div>
+    </>
   );
 }

@@ -8,6 +8,11 @@
 
   position: relative;
 
-  top: 64px;
+  top: 0px;
   bottom: 64px;
+}
+
+.page-container {
+  position: relative;
+  top: 64px;
 }

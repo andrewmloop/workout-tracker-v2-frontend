@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/user-context";
 import { ROUTES } from "../../utils/route-enums";
 import { LogDto } from "../../entities/log";
+import TopNav from "../../components/top-nav/TopNav";
 
 const FORM_VALUES = ["good", "okay", "poor"];
 
 export default function Log() {
   const location = useLocation();
-  const exerciseId = location.state;
+  const exerciseId = location.state.exerciseId;
+  const exerciseName = location.state.exerciseName;
 
   const { userStore } = useUserContext();
 
@@ -88,60 +90,67 @@ export default function Log() {
   };
 
   return (
-    <div className="log-page page-container">
-      <div className="buttons-container">
-        <button className="edit-button">Edit</button>
-        <button className="chart-button">Chart</button>
-      </div>
-      {/* Use userStore to determine if logging will show up on left for right */}
-      <div className="column-container">
-        <div className="log-column">
-          {logList.length > 0 &&
-            logList.map((log) => {
-              return (
-                <LogItem
-                  weight={
-                    userStore?.useMetric ? log.weightMetric : log.weightImperial
-                  }
-                  isMetric={userStore?.useMetric as boolean}
-                  reps={log.reps}
-                  form={log.form}
-                />
-              );
-            })}
+    <>
+      <TopNav showBackButton={true} navText={exerciseName} />
+      <div className="log-page page-container">
+        <div className="buttons-container">
+          <button className="edit-button">Edit</button>
+          <button className="chart-button">Chart</button>
         </div>
-        <div className="input-column">
-          <div className="weight-input-container">
-            <label>Weight</label>
-            <input
-              type="number"
-              min={0}
-              maxLength={3}
-              placeholder={userStore?.useMetric ? "kgs" : "lbs"}
-              onChange={(e) => setWeightInput(e.target.value)}
-            />
+        {/* Use userStore to determine if logging will show up on left for right */}
+        <div className="column-container">
+          <div className="log-column">
+            {logList.length > 0 &&
+              logList.map((log) => {
+                return (
+                  <LogItem
+                    weight={
+                      userStore?.useMetric
+                        ? log.weightMetric
+                        : log.weightImperial
+                    }
+                    isMetric={userStore?.useMetric as boolean}
+                    reps={log.reps}
+                    form={log.form}
+                  />
+                );
+              })}
           </div>
-          <div className="reps-input-container">
-            <label>Reps</label>
-            <input
-              type="number"
-              min={0}
-              maxLength={3}
-              placeholder="reps"
-              onChange={(e) => setRepsInput(e.target.value)}
-            />
-          </div>
-          <div className="form-input-container">
-            <label>Form</label>
-            <button onClick={handleFormInput}>{formInput.toUpperCase()}</button>
-          </div>
-          <div className="submit-input-container">
-            <label>Log</label>
-            <button onClick={handleSubmit}>Submit</button>
+          <div className="input-column">
+            <div className="weight-input-container">
+              <label>Weight</label>
+              <input
+                type="number"
+                min={0}
+                maxLength={3}
+                placeholder={userStore?.useMetric ? "kgs" : "lbs"}
+                onChange={(e) => setWeightInput(e.target.value)}
+              />
+            </div>
+            <div className="reps-input-container">
+              <label>Reps</label>
+              <input
+                type="number"
+                min={0}
+                maxLength={3}
+                placeholder="reps"
+                onChange={(e) => setRepsInput(e.target.value)}
+              />
+            </div>
+            <div className="form-input-container">
+              <label>Form</label>
+              <button onClick={handleFormInput}>
+                {formInput.toUpperCase()}
+              </button>
+            </div>
+            <div className="submit-input-container">
+              <label>Log</label>
+              <button onClick={handleSubmit}>Submit</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

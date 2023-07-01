@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ExerciseDto } from "../../../entities/exercise";
 import "./ExerciseSearch.css";
 import { useExerciseContext } from "../../../context/exercise-context";
+import TopNav from "../../../components/top-nav/TopNav";
 
 export default function ExerciseSearch() {
   const params = useParams();
@@ -17,7 +18,6 @@ export default function ExerciseSearch() {
   const [debounceState, setDebounceState] = useState("");
 
   useEffect(() => {
-    console.log(exerciseList.length);
     if (muscle === "all") {
       setFilteredList(exerciseList);
     } else {
@@ -40,21 +40,27 @@ export default function ExerciseSearch() {
   }, [inputState, 250]);
 
   return (
-    <div className="exercise-search-container">
-      <div className="search-container">
-        <input type="text" onChange={(e) => setInputState(e.target.value)} />
+    <>
+      <TopNav
+        showBackButton={true}
+        navText={muscle === "all" ? "All Exercises" : capitalize(muscle)}
+      />
+      <div className="exercise-search-page page-container">
+        <div className="search-container">
+          <input type="text" onChange={(e) => setInputState(e.target.value)} />
+        </div>
+        <div className="exercise-list-container">
+          {filteredList
+            .filter((e) => {
+              if (inputState === "") return true;
+              return e.name.toLowerCase().includes(debounceState.toLowerCase());
+            })
+            .map((e) => {
+              return <Exercise key={e._id} exercise={e} />;
+            })}
+        </div>
       </div>
-      <div className="exercise-list-container">
-        {filteredList
-          .filter((e) => {
-            if (inputState === "") return true;
-            return e.name.toLowerCase().includes(debounceState.toLowerCase());
-          })
-          .map((e) => {
-            return <Exercise key={e._id} exercise={e} />;
-          })}
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -71,4 +77,8 @@ function Exercise(props: ExerciseProps) {
       <div className="exercise-text">{exercise.name}</div>
     </Link>
   );
+}
+
+function capitalize(string: string) {
+  return string.slice(0, 1).toUpperCase() + string.slice(1);
 }

@@ -3,6 +3,7 @@ import { RoutineDto } from "../../../entities/routine";
 import { ROUTES } from "../../../utils/route-enums";
 import "./RoutineList.css";
 import { Link, useNavigate } from "react-router-dom";
+import TopNav from "../../../components/top-nav/TopNav";
 
 export default function RoutineList() {
   const [routineList, setRoutineList] = useState<RoutineDto[]>([]);
@@ -41,20 +42,23 @@ export default function RoutineList() {
   };
 
   return (
-    <div className="routine-list-page-container">
-      <div className="routine-list-buttons-container">
-        <button onClick={handleAddRoutine} className="add-routine-button">
-          Add
-        </button>
-        <button className="edit-routine-button">Edit</button>
+    <>
+      <TopNav showBackButton={false} navText="Routines" />
+      <div className="routine-list page-container">
+        <div className="routine-list-buttons-container">
+          <button onClick={handleAddRoutine} className="add-routine-button">
+            Add
+          </button>
+          <button className="edit-routine-button">Edit</button>
+        </div>
+        <div className="routine-list-container">
+          {routineList.length > 0 &&
+            routineList.map((routine) => (
+              <RoutineItem routine={routine} key={routine._id} />
+            ))}
+        </div>
       </div>
-      <div className="routine-list-container">
-        {routineList.length > 0 &&
-          routineList.map((routine) => (
-            <RoutineItem routine={routine} key={routine._id} />
-          ))}
-      </div>
-    </div>
+    </>
   );
 }
 
