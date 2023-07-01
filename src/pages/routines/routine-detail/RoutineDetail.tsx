@@ -92,7 +92,7 @@ function RoutineExercise(props: RoutineItemState) {
 type LogButtonPropType = { exerciseId: string };
 function LogButton(props: LogButtonPropType) {
   return (
-    <Link to={"/"} state={props.exerciseId} className="log-button">
+    <Link to={"/log"} state={props.exerciseId} className="log-button">
       Log
     </Link>
   );
