@@ -3,14 +3,16 @@
   height: 64px;
 
   position: absolute;
-  top: 0;  
+  top: 0;
+  
+  padding: 0 1rem;
 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 
-  border: 2px white solid;
+  background-color: var(--color-background-secondary);
 
   z-index: 1000;
 }

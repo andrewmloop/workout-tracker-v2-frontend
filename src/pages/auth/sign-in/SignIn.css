@@ -1,5 +1,8 @@
 .sign-in-page {
   top: 0px;
+
+  padding: 1rem;
+
   display: flex;
   flex-direction: column;
   justify-content: start;
