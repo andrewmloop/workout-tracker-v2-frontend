@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Log.css";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/user-context";
@@ -9,6 +9,7 @@ import TopNav from "../../components/top-nav/TopNav";
 const FORM_VALUES = ["good", "okay", "poor"];
 
 export default function Log() {
+  const navigate = useNavigate();
   const location = useLocation();
   const exerciseId = location.state.exerciseId;
   const exerciseName = location.state.exerciseName;
@@ -29,13 +30,24 @@ export default function Log() {
     const getLogsUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.LOG;
     const method = "GET";
 
-    const response = await fetch(getLogsUrl, {
-      method: method,
-      credentials: "include",
-    });
+    try {
+      const response = await fetch(getLogsUrl, {
+        method: method,
+        credentials: "include",
+      });
 
-    const data = await response.json();
-    console.log(data);
+      const data = await response.json();
+
+      if (response.ok) {
+        setLogList(data);
+      } else if (response.status === 401) {
+        navigate("/auth/signin");
+      } else {
+        throw new Error(data);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   const handleFormInput = () => {
@@ -51,6 +63,8 @@ export default function Log() {
   };
 
   const handleSubmit = async () => {
+    if (weightInput === "" || repsInput === "") return;
+
     const addLogUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.LOG;
     const method = "POST";
     const headers = {
@@ -68,24 +82,29 @@ export default function Log() {
       form: formInput,
     };
 
-    console.log(body);
-
-    const response = await fetch(addLogUrl, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body),
-      credentials: "include",
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (response.ok) {
-      setLogList((prev) => {
-        const list = JSON.parse(JSON.stringify(prev));
-        list.push(data);
-        return list;
+    try {
+      const response = await fetch(addLogUrl, {
+        method: method,
+        headers: headers,
+        body: JSON.stringify(body),
+        credentials: "include",
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setLogList((prev) => {
+          const list = JSON.parse(JSON.stringify(prev));
+          list.push(data);
+          return list;
+        });
+      } else if (response.status === 401) {
+        navigate("/auth/signin");
+      } else {
+        throw new Error(data);
+      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -104,6 +123,7 @@ export default function Log() {
               logList.map((log) => {
                 return (
                   <LogItem
+                    key={log._id}
                     weight={
                       userStore?.useMetric
                         ? log.weightMetric
