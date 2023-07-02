@@ -1,0 +1,24 @@
+.sign-in-page {
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.sign-in-container > button {
+  margin-top: 5px;
+}
+
+.sign-in-error-container {
+  height: 1rem;
+}
+
+.sign-in-link-container {
+  margin-top: 5px;
+}

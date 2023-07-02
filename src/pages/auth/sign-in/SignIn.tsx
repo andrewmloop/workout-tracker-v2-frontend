@@ -64,17 +64,19 @@ export default function SignIn() {
   };
 
   return (
-    <div className="sign-in-page-container">
+    <div className="sign-in-page page-container">
       <form onSubmit={(e) => handleSubmit(e)} className="sign-in-form">
-        <div className="sign-in-email-container">
+        <div className="sign-in-container">
+          <label>Email</label>
           <input
-            type="email"
+            type="username"
             autoComplete="username"
             className="sign-in-email-input"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="sign-in-password-container">
+        <div className="sign-in-container">
+          <label>Password</label>
           <input
             type="password"
             autoComplete="current-password"
@@ -82,16 +84,16 @@ export default function SignIn() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="sign-in-error-container">
-          {error.length > 0 && <p className="sign-in-error-text">{error}</p>}
-        </div>
-        <div className="sign-in-submit-container">
+        <div className="sign-in-container">
           <button type="submit" className="sign-in-submit-button">
             {loading ? "Loading..." : "Submit"}
           </button>
         </div>
       </form>
-      <div className="sign-up-link-container">
+      <div className="sign-in-error-container">
+        {error.length > 0 && <p className="error-text">{error}</p>}
+      </div>
+      <div className="sign-in-link-container">
         Not a user? <Link to={"/auth/signup"}>Sign Up</Link>
       </div>
     </div>
