@@ -27,7 +27,8 @@ export default function Log() {
   }, []);
 
   const fetchLogs = async () => {
-    const getLogsUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.LOG;
+    const getLogsUrl =
+      import.meta.env.VITE_BACKEND_HOST + ROUTES.LOG_EXERCISE + exerciseId;
     const method = "GET";
 
     try {
