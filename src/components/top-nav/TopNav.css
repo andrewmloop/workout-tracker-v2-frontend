@@ -2,7 +2,7 @@
   width: 100vw;
   height: 64px;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   
   padding: 0 1rem;

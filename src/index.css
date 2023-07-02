@@ -4,6 +4,7 @@
   --color-primary: #646cff;
   --color-primary-hover: #535bf2;
   --color-secondary: #ffaf61;
+  --color-text-white: #ffffffde;
 
   --size-border-radius-input: 5px;
   --size-border-radius-button: 20px;
@@ -12,7 +13,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: rgba(255, 255, 255, 0.87);
+  color: var(--color-text-white);
   background-color: var(--color-background);
 
   font-synthesis: none;

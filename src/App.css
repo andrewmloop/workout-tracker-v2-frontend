@@ -13,8 +13,15 @@
 }
 
 .page-container {
+  max-height: calc(100vh - 64px);
+  width: 100vw;
+
   position: relative;
   top: 64px;
+
+  padding: 1rem;
+
+  overflow-y: scroll;
 }
 
 .error-text {

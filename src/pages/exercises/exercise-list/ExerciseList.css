@@ -1,23 +1,21 @@
-.exercise-list-container {
+.exercise-list-page {
   /* Position */
   display: flex;
   flex-direction: column;
   justify-content: start;
-  z-index: 1;
   /* Shape */
-  width: 100vw;
-  height: calc(100vh - 64px);
-  border: 3px red solid;
   overflow-y: scroll;
   /* Color */
+  color: var(--color-text-white)
 }
 
-.exercise-list-container > ul {
-  padding: 0;
-  margin: 0;
+.exercise-list-page:last-child {
+  border-bottom: none;
 }
 
 .list-item-container {
+  margin-bottom: 5px;
+  padding: .25rem 0;
   /* Position */
   display: flex;
   flex-direction: row;
@@ -25,5 +23,12 @@
   align-items: center;
   /* Shape */
   width: 100%;
-  border: 2px yellow solid;
+
+  color: var(--color-text-white);
+
+  border-bottom: 1px solid var(--color-text-white);
+}
+
+.list-item-container:last-child {
+  border-bottom: none;
 }
