@@ -15,4 +15,5 @@
 .page-container {
   position: relative;
   top: 64px;
+  margin: 1em;
 }

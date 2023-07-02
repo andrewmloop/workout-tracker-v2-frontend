@@ -1,4 +1,5 @@
 .sign-up-page {
+  top: 0px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -8,6 +9,10 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
+}
+
+.sign-up-container button {
+  margin-top: 5px;
 }
 
 .sign-up-error-container {
