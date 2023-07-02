@@ -9,16 +9,20 @@
   align-items: center;
   justify-content: space-evenly;
 
-  border: 2px white solid;
+  background-color: var(--color-background-secondary);
 
   z-index: 1000;
 }
 
-.link-container {
+.nav-link {
   height: 100%;
-  width: 33.33%;
+  width: 100%;
 
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+.nav-link.active {
+  background-color: var(--color-secondary)
 }

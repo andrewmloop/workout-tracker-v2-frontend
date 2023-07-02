@@ -1,7 +1,9 @@
 :root {
   --color-background: #242424;
+  --color-background-secondary: #2C2C2C;
   --color-primary: #646cff;
   --color-primary-hover: #535bf2;
+  --color-secondary: #ffaf61;
 
   --size-border-radius-input: 5px;
   --size-border-radius-button: 20px;
