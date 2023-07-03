@@ -18,6 +18,7 @@ export default function Log() {
   const { userStore } = useUserContext();
 
   const [logList, setLogList] = useState<LogDto[]>([]);
+  const [dateList, setDateList] = useState<string[]>([]);
 
   const [weightInput, setWeightInput] = useState("");
   const [repsInput, setRepsInput] = useState("");
@@ -26,6 +27,10 @@ export default function Log() {
   useEffect(() => {
     fetchLogs();
   }, []);
+
+  useEffect(() => {
+    extractDates();
+  }, [logList]);
 
   const fetchLogs = async () => {
     const getLogsUrl =
@@ -110,6 +115,16 @@ export default function Log() {
     }
   };
 
+  const extractDates = () => {
+    let dateList: string[] = [];
+    logList.map((log) => {
+      let date = new Date(log.createdAt).toLocaleDateString();
+      if (dateList.includes(date)) return;
+      dateList.push(date);
+    });
+    setDateList(dateList);
+  };
+
   return (
     <>
       <TopNav showBackButton={true} navText={exerciseName} />
@@ -122,19 +137,34 @@ export default function Log() {
         <div className="column-container">
           <div className="log-column">
             {logList.length > 0 &&
-              logList.map((log) => {
+              dateList.map((date, index) => {
                 return (
-                  <LogItem
-                    key={log._id}
-                    weight={
-                      userStore?.useMetric
-                        ? log.weightMetric
-                        : log.weightImperial
-                    }
-                    isMetric={userStore?.useMetric as boolean}
-                    reps={log.reps}
-                    form={log.form}
-                  />
+                  <div key={index} className="log-date-container">
+                    <label className="log-date-header">{date}</label>
+                    {logList
+                      .filter(
+                        (log) =>
+                          new Date(log.createdAt).toLocaleDateString() === date
+                      )
+                      .sort(
+                        (a, b) =>
+                          Date.parse(a.createdAt) - Date.parse(b.createdAt)
+                      )
+                      .map((log, index) => (
+                        <LogItem
+                          key={log._id}
+                          index={index}
+                          weight={
+                            userStore?.useMetric
+                              ? log.weightMetric
+                              : log.weightImperial
+                          }
+                          isMetric={userStore?.useMetric as boolean}
+                          reps={log.reps}
+                          form={log.form}
+                        />
+                      ))}
+                  </div>
                 );
               })}
           </div>
@@ -186,6 +216,7 @@ export default function Log() {
 }
 
 type LogItemPropType = {
+  index: number;
   weight: number;
   isMetric: boolean;
   reps: number;
@@ -195,7 +226,9 @@ function LogItem(props: LogItemPropType) {
   const units = props.isMetric ? "kgs" : "lbs";
   return (
     <div className="log-item-container">
-      <p className="log-text">{`${props.weight} ${units} x ${props.reps} reps`}</p>
+      <p className="log-text">{`${props.index + 1}: ${
+        props.weight
+      } ${units} x ${props.reps} reps`}</p>
       <p
         className={`form-text ${
           props.form === "Good"

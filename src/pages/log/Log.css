@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
+
+  overflow-y: hidden;
 }
 
 .log-buttons-container {
@@ -25,6 +27,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  overflow-y: hidden;
 }
 
 .log-column {
@@ -35,6 +39,8 @@
   justify-content: start;
 
   padding-right: 1rem;
+
+  overflow-y: scroll;
 }
 
 .input-column {
@@ -85,6 +91,10 @@
   font-size: 1.1rem;
 }
 
+.log-date-container {
+  margin-bottom: 1rem;
+}
+
 .log-item-container {
   display: flex;
   flex-direction: row;
@@ -100,12 +110,15 @@
   overflow: hidden;
 }
 
-.log-item-container p {
-  padding: .5rem;
+.log-text {
+  padding-left: .25rem;
+  padding: .5rem 0 .5rem .25rem;
 }
 
 .form-text {
   height: 100%;
-  width: 25%;
+  width: 20%;
   text-align: end;
+  font-size: 0.85rem;
+  padding: .5rem .25rem;
 }
