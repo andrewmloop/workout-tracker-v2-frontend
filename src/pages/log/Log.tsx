@@ -96,7 +96,7 @@ export default function Log() {
       if (response.ok) {
         setLogList((prev) => {
           const list = JSON.parse(JSON.stringify(prev));
-          list.push(data);
+          list.unshift(data);
           return list;
         });
       } else if (response.status === 401) {
@@ -113,9 +113,9 @@ export default function Log() {
     <>
       <TopNav showBackButton={true} navText={exerciseName} />
       <div className="log-page page-container">
-        <div className="buttons-container">
-          <button className="edit-button">Edit</button>
-          <button className="chart-button">Chart</button>
+        <div className="log-buttons-container">
+          <button>Edit</button>
+          <button>Chart</button>
         </div>
         {/* Use userStore to determine if logging will show up on left for right */}
         <div className="column-container">
@@ -138,7 +138,7 @@ export default function Log() {
               })}
           </div>
           <div className="input-column">
-            <div className="weight-input-container">
+            <div className="input-container">
               <label>Weight</label>
               <input
                 type="number"
@@ -148,7 +148,7 @@ export default function Log() {
                 onChange={(e) => setWeightInput(e.target.value)}
               />
             </div>
-            <div className="reps-input-container">
+            <div className="input-container">
               <label>Reps</label>
               <input
                 type="number"
@@ -158,14 +158,22 @@ export default function Log() {
                 onChange={(e) => setRepsInput(e.target.value)}
               />
             </div>
-            <div className="form-input-container">
+            <div className="input-container">
               <label>Form</label>
-              <button onClick={handleFormInput}>
-                {formInput.toUpperCase()}
-              </button>
+              <input
+                type="button"
+                onClick={handleFormInput}
+                value={formInput.slice(0, 1).toUpperCase() + formInput.slice(1)}
+                className={
+                  formInput === "good"
+                    ? "good-input"
+                    : formInput === "okay"
+                    ? "okay-input"
+                    : "poor-input"
+                }
+              />
             </div>
-            <div className="submit-input-container">
-              <label>Log</label>
+            <div className="input-container">
               <button onClick={handleSubmit}>Submit</button>
             </div>
           </div>
@@ -186,7 +194,17 @@ function LogItem(props: LogItemPropType) {
   return (
     <div className="log-item-container">
       <p className="log-text">{`${props.weight} ${units} x ${props.reps} reps`}</p>
-      <p className="form-text">{props.form}</p>
+      <p
+        className={`form-text ${
+          props.form === "Good"
+            ? "good-input"
+            : props.form === "Okay"
+            ? "okay-input"
+            : "poor-input"
+        }`}
+      >
+        {props.form}
+      </p>
     </div>
   );
 }

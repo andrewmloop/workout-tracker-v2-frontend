@@ -1,0 +1,111 @@
+.log-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.log-buttons-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1rem;
+}
+
+.log-buttons-container button {
+  width: 48%;
+}
+
+.column-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.log-column {
+  width: 66%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+  padding-right: 1rem;
+}
+
+.input-column {
+  width: 33%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.input-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: .25rem;
+}
+
+.input-container label {
+  font-weight: bold;
+}
+
+.input-container input[type=number] {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.input-container input[type=button] {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.good-input {
+  background-color: green;
+}
+
+.okay-input {
+  background-color: darkgoldenrod;
+}
+
+.poor-input {
+  background-color: darkred;
+}
+
+.input-container button {
+  margin-top: .5rem;
+  font-size: 1.1rem;
+}
+
+.log-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: .5rem;
+
+  background-color: var(--color-background-secondary);
+
+  border-radius: 5px;
+
+  overflow: hidden;
+}
+
+.log-item-container p {
+  padding: .5rem;
+}
+
+.form-text {
+  height: 100%;
+  width: 25%;
+  text-align: end;
+}
