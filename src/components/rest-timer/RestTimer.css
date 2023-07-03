@@ -1,0 +1,27 @@
+.rest-timer-container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+  margin-top: 0.5rem;
+}
+
+.rest-timer-container label {
+  font-weight: bold;
+}
+
+.rest-timer-container select,
+.rest-timer-container button {
+  width: 100%;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.rest-timer-dropdown-container {
+  width: 100%;
+
+  margin-bottom: 0.5rem;
+}
+

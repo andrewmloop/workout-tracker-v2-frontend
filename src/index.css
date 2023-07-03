@@ -81,3 +81,14 @@ input:focus,
 input:focus-visible {
   outline-color: var(--color-primary);
 }
+
+select {
+  border-radius: var(--size-border-radius-input);
+  border: 1px solid transparent;
+  outline: solid 2px transparent;
+  padding: 0.3rem 0.6rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: outline-color 0.25s;
+}
