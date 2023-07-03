@@ -44,12 +44,15 @@ export default function RoutineList() {
   return (
     <>
       <TopNav showBackButton={false} navText="Routines" />
-      <div className="routine-list page-container">
+      <div className="routine-list-page page-container">
         <div className="routine-list-buttons-container">
-          <button onClick={handleAddRoutine} className="add-routine-button">
+          <button
+            onClick={handleAddRoutine}
+            className="add-button routine-button"
+          >
             Add
           </button>
-          <button className="edit-routine-button">Edit</button>
+          <button className="edit-button routine-button">Edit</button>
         </div>
         <div className="routine-list-container">
           {routineList.length > 0 &&
@@ -71,6 +74,7 @@ function RoutineItem(props: RoutineItemProps) {
       className="routine-container"
     >
       <p className="routine-name">{props.routine.name}</p>
+      <div className="routine-arrow-container">--&gt;</div>
     </Link>
   );
 }
