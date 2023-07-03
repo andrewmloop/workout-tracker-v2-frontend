@@ -1,0 +1,9 @@
+.add-routine-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.add-routine-page input {
+  margin-bottom: 1rem;
+}

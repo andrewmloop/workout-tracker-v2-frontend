@@ -57,19 +57,12 @@ export default function AddRoutine() {
     <>
       <TopNav showBackButton={true} navText="Add Routine" />
       <div className="add-routine-page page-container">
-        <input
-          type="text"
-          className="routine-name-input"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="routine-name-submit-button"
-        >
+        <label>Routine Name</label>
+        <input type="text" onChange={(e) => setName(e.target.value)} />
+        <button type="submit" onClick={handleSubmit}>
           {loading ? "Loading..." : "Submit"}
         </button>
-        {error.length > 0 && <p className="add-routine-error-text">{error}</p>}
+        {error.length > 0 && <p className="error-text">{error}</p>}
       </div>
     </>
   );
