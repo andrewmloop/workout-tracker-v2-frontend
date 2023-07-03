@@ -46,12 +46,42 @@ export default function RoutineDetail() {
     setRoutineExerciseList(list);
   };
 
+  const handleAddExercise = () => {
+    return;
+  };
+
+  const handleEditRoutine = () => {
+    return;
+  };
+
+  const handleEditTargets = () => {};
+
   return (
     <>
       <TopNav showBackButton={true} navText={routine.name} />
-      <div className="routine-detail page-container">
+      <div className="routine-detail-page page-container">
         <div className="routine-description-container">
           <p className="routine-description">{routine.description}</p>
+        </div>
+        <div className="routine-desc-buttons-container">
+          <button
+            onClick={handleAddExercise}
+            className="add-button desc-button"
+          >
+            Add
+          </button>
+          <button
+            onClick={handleEditRoutine}
+            className="edit-button desc-button"
+          >
+            Edit
+          </button>
+          <button
+            onClick={handleEditTargets}
+            className="targets-button desc-button"
+          >
+            Targets
+          </button>
         </div>
         <div className="routine-exercise-list-container">
           {routineExerciseList.length > 0 &&
@@ -76,7 +106,11 @@ function RoutineExercise(props: RoutineItemState) {
   return (
     <div className="routine-exercise-container">
       <p className="routine-exercise-name">{props.exerciseName}</p>
-      <input
+      <LogButton
+        exerciseId={props.exerciseId}
+        exerciseName={props.exerciseName}
+      />
+      {/* <input
         type="text"
         maxLength={4}
         defaultValue={props.sets}
@@ -87,11 +121,7 @@ function RoutineExercise(props: RoutineItemState) {
         maxLength={4}
         defaultValue={props.reps}
         className="reps-input"
-      />
-      <LogButton
-        exerciseId={props.exerciseId}
-        exerciseName={props.exerciseName}
-      />
+      /> */}
     </div>
   );
 }
