@@ -16,6 +16,7 @@ import AddRoutine from "./pages/routines/add-routine/AddRoutine";
 import SignUp from "./pages/auth/sign-up/SignUp";
 import Settings from "./pages/settings/Settings";
 import Log from "./pages/log/Log";
+import { TimerProvider } from "./context/timer-context";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -43,7 +44,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ExerciseProvider>
       <UserProvider>
-        <RouterProvider router={router} />
+        <TimerProvider>
+          <RouterProvider router={router} />
+        </TimerProvider>
       </UserProvider>
     </ExerciseProvider>
   </React.StrictMode>

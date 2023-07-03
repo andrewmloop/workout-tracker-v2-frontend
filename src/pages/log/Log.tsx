@@ -5,6 +5,7 @@ import { useUserContext } from "../../context/user-context";
 import { ROUTES } from "../../utils/route-enums";
 import { LogDto } from "../../entities/log";
 import TopNav from "../../components/top-nav/TopNav";
+import RestTimer from "../../components/rest-timer/RestTimer";
 
 const FORM_VALUES = ["good", "okay", "poor"];
 
@@ -176,6 +177,7 @@ export default function Log() {
             <div className="input-container">
               <button onClick={handleSubmit}>Submit</button>
             </div>
+            <RestTimer />
           </div>
         </div>
       </div>
