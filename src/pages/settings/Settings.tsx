@@ -31,7 +31,7 @@ export default function Settings() {
       <TopNav showBackButton={true} navText="Settings" />
       <div className="settings-page page-container">
         <button onClick={handleSignOut} className="log-out-button">
-          Sign Out!
+          Sign Out
         </button>
       </div>
     </>
