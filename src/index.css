@@ -94,3 +94,7 @@ select {
   font-family: inherit;
   transition: outline-color 0.25s;
 }
+
+input[type=button] {
+  color: var(--color-text-white);
+}
