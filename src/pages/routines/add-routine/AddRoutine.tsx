@@ -3,6 +3,7 @@ import { ROUTES } from "../../../utils/route-enums";
 import { useNavigate } from "react-router-dom";
 import "./AddRoutine.css";
 import TopNav from "../../../components/top-nav/TopNav";
+import { fetchApi } from "../../../utils/fetch-util";
 
 export default function AddRoutine() {
   const [name, setName] = useState("");
@@ -22,7 +23,6 @@ export default function AddRoutine() {
     setLoading(true);
 
     try {
-      const addRoutineUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.ROUTINE;
       const method = "POST";
       const headers = {
         "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export default function AddRoutine() {
         name: name,
       });
 
-      const response = await fetch(addRoutineUrl, {
+      const response = await fetchApi(ROUTES.ROUTINE, {
         method: method,
         headers: headers,
         body: body,

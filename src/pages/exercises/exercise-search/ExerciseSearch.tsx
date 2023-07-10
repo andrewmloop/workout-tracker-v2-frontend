@@ -47,7 +47,11 @@ export default function ExerciseSearch() {
       />
       <div className="exercise-search-page page-container">
         <div className="search-container">
-          <input type="text" onChange={(e) => setInputState(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Search exercises"
+            onChange={(e) => setInputState(e.target.value)}
+          />
         </div>
         <div className="exercise-list-container">
           {filteredList

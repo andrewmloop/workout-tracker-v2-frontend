@@ -118,7 +118,8 @@
 .form-text {
   height: 100%;
   width: 20%;
-  text-align: end;
+  text-align: start;
   font-size: 0.85rem;
   padding: .5rem .25rem;
+  padding-left: .5rem;
 }

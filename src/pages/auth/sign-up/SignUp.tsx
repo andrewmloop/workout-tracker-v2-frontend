@@ -4,6 +4,7 @@ import { useUserContext } from "../../../context/user-context";
 import { FormEvent, useState } from "react";
 import { ROUTES } from "../../../utils/route-enums";
 import { UserDto } from "../../../entities/user";
+import { fetchApi } from "../../../utils/fetch-util";
 
 export default function SignUp() {
   const { setUserStore } = useUserContext();
@@ -88,7 +89,6 @@ export default function SignUp() {
     await new Promise((f) => setTimeout(f, 1000));
 
     try {
-      const createUserUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.USER;
       const method = "POST";
       const headers = {
         "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export default function SignUp() {
         password: password,
       });
 
-      const response = await fetch(createUserUrl, {
+      const response = await fetchApi(ROUTES.USER, {
         method: method,
         headers: headers,
         body: body,

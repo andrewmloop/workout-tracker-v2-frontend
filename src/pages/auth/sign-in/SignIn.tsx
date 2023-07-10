@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { ROUTES } from "../../../utils/route-enums";
 import { useUserContext } from "../../../context/user-context";
 import { UserDto } from "../../../entities/user";
+import { fetchApi } from "../../../utils/fetch-util";
 
 export default function SignIn() {
   const { setUserStore } = useUserContext();
@@ -31,7 +32,6 @@ export default function SignIn() {
 
     setLoading(true);
     try {
-      const signInUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.SIGN_IN;
       const method = "POST";
       const headers = {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export default function SignIn() {
         password: password,
       });
 
-      const response = await fetch(signInUrl, {
+      const response = await fetchApi(ROUTES.SIGN_IN, {
         method: method,
         headers: headers,
         body: body,
@@ -70,6 +70,7 @@ export default function SignIn() {
           <label>Email</label>
           <input
             type="username"
+            autoCapitalize="off"
             autoComplete="username"
             className="sign-in-email-input"
             onChange={(e) => setEmail(e.target.value)}
@@ -79,6 +80,7 @@ export default function SignIn() {
           <label>Password</label>
           <input
             type="password"
+            autoCapitalize="off"
             autoComplete="current-password"
             className="sign-in-password-input"
             onChange={(e) => setPassword(e.target.value)}

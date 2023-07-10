@@ -6,6 +6,7 @@ import { ROUTES } from "../../utils/route-enums";
 import { LogDto } from "../../entities/log";
 import TopNav from "../../components/top-nav/TopNav";
 import RestTimer from "../../components/rest-timer/RestTimer";
+import { fetchApi } from "../../utils/fetch-util";
 
 const FORM_VALUES = ["good", "okay", "poor"];
 
@@ -33,13 +34,8 @@ export default function Log() {
   }, [logList]);
 
   const fetchLogs = async () => {
-    const getLogsUrl =
-      import.meta.env.VITE_BACKEND_HOST + ROUTES.LOG_EXERCISE + exerciseId;
-    const method = "GET";
-
     try {
-      const response = await fetch(getLogsUrl, {
-        method: method,
+      const response = await fetchApi(ROUTES.LOG_EXERCISE + exerciseId, {
         credentials: "include",
       });
 
@@ -72,7 +68,6 @@ export default function Log() {
   const handleSubmit = async () => {
     if (weightInput === "" || repsInput === "") return;
 
-    const addLogUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.LOG;
     const method = "POST";
     const headers = {
       "Content-Type": "application/json",
@@ -90,7 +85,7 @@ export default function Log() {
     };
 
     try {
-      const response = await fetch(addLogUrl, {
+      const response = await fetchApi(ROUTES.LOG, {
         method: method,
         headers: headers,
         body: JSON.stringify(body),
