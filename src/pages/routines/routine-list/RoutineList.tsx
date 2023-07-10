@@ -4,6 +4,7 @@ import { ROUTES } from "../../../utils/route-enums";
 import "./RoutineList.css";
 import { Link, useNavigate } from "react-router-dom";
 import TopNav from "../../../components/top-nav/TopNav";
+import { fetchApi } from "../../../utils/fetch-util";
 
 export default function RoutineList() {
   const [routineList, setRoutineList] = useState<RoutineDto[]>([]);
@@ -15,10 +16,8 @@ export default function RoutineList() {
   }, []);
 
   const fetchRoutines = async () => {
-    const getRoutineUrl = import.meta.env.VITE_BACKEND_HOST + ROUTES.ROUTINE;
-
     try {
-      const response = await fetch(getRoutineUrl, {
+      const response = await fetchApi(ROUTES.ROUTINE, {
         credentials: "include",
       });
 
