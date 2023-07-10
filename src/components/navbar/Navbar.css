@@ -1,6 +1,6 @@
 .nav-container {
   width: 100vw;
-  height: 64px;
+  height: 78px;
 
   position: absolute;
   bottom: 0;  
@@ -20,7 +20,9 @@
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
+
+  padding-top: 1rem;
 }
 
 .nav-link.active {
