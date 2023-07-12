@@ -1,11 +1,16 @@
 import TopNav from "../../../components/top-nav/TopNav";
+import { useAddExerciseContext } from "../../../context/add-exercise-context";
 import "./ExerciseList.css";
 import { Link } from "react-router-dom";
 
 export default function ExerciseList() {
+  const { isAdding } = useAddExerciseContext();
   return (
     <>
-      <TopNav showBackButton={false} navText="Exercises" />
+      <TopNav
+        showBackButton={false}
+        navText={isAdding ? "Add Exercises" : "Exercises"}
+      />
       <div className="exercise-list-page page-container">
         <ListItem itemName="All Exercises" muscle="all" />
         <ListItem itemName="Abdominals" muscle="abdominals" />

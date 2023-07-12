@@ -1,9 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./RoutineDetail.css";
 import { RoutineDto } from "../../../entities/routine";
 import { useEffect, useState } from "react";
 import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
+import { useAddExerciseContext } from "../../../context/add-exercise-context";
+import { fetchApi } from "../../../utils/fetch-util";
+import { ROUTES } from "../../../utils/route-enums";
 
 interface RoutineItemState {
   exerciseId: string;
@@ -16,22 +19,27 @@ export default function RoutineDetail() {
   // Get routine passed from previous route
   const location = useLocation();
   const routine: RoutineDto = location.state;
+  const navigate = useNavigate();
 
+  const { isAdding, setIsAdding, exercisesToAdd, setExercisesToAdd } =
+    useAddExerciseContext();
   // Get the list of exercises and build a populated list from
   // exerciseIds in routine's "exercises" field
   const { exerciseList } = useExerciseContext();
+
+  const [routineState, setRoutineState] = useState(routine);
   const [routineExerciseList, setRoutineExerciseList] = useState<
     RoutineItemState[]
   >([]);
 
   useEffect(() => {
     populateRoutineExercises();
-  }, []);
+  }, [routineState]);
 
   const populateRoutineExercises = () => {
     const list: RoutineItemState[] = [];
 
-    for (let exercise of routine.exercises) {
+    for (let exercise of routineState.exercises) {
       let fullExercise = exerciseList.find(
         (e) => e._id === exercise.exerciseId
       );
@@ -47,7 +55,48 @@ export default function RoutineDetail() {
   };
 
   const handleAddExercise = () => {
-    return;
+    setIsAdding(true);
+    setExercisesToAdd([]);
+    navigate("/exercises");
+  };
+
+  const handleAddComplete = async () => {
+    setIsAdding(false);
+
+    try {
+      const method = "POST";
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      const body = JSON.stringify({
+        exerciseIds: exercisesToAdd,
+      });
+
+      const response = await fetchApi(
+        ROUTES.ROUTINE_ID_ADD.replace(":id", routineState._id),
+        {
+          method: method,
+          headers: headers,
+          body: body,
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data);
+        setRoutineState(data);
+      } else if (response.status === 401) {
+        navigate("/auth/signin");
+      } else {
+        throw new Error(data);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setExercisesToAdd([]);
+    }
   };
 
   const handleEditRoutine = () => {
@@ -64,12 +113,21 @@ export default function RoutineDetail() {
           <p className="routine-description">{routine.description}</p>
         </div>
         <div className="routine-desc-buttons-container">
-          <button
-            onClick={handleAddExercise}
-            className="add-button desc-button"
-          >
-            Add
-          </button>
+          {isAdding ? (
+            <button
+              className="complete-button desc-button"
+              onClick={handleAddComplete}
+            >
+              Complete
+            </button>
+          ) : (
+            <button
+              onClick={handleAddExercise}
+              className="add-button desc-button"
+            >
+              Add
+            </button>
+          )}
           <button
             onClick={handleEditRoutine}
             className="edit-button desc-button"

@@ -1,5 +1,8 @@
 /**
- * A global store for adding new exercises to a routine
+ * This is essentially just a global store to assist when
+ * adding exercises to a routine. This is needed as the process
+ * of adding exercises crosses multiple page components and passing
+ * state around is messy.
  */
 
 import {
@@ -37,4 +40,35 @@ export function AddExerciseProvider({ children }: any) {
   );
 }
 
-export const useAddExerciseContext = () => useContext(AddExerciseContext);
+export const useAddExerciseContext = () => {
+  const { isAdding, setIsAdding, exercisesToAdd, setExercisesToAdd } =
+    useContext(AddExerciseContext);
+
+  const addOneExercise = (exerciseId: string) => {
+    setExercisesToAdd((prev) => {
+      const listClone = Object.assign([], prev);
+      listClone.push(exerciseId);
+      return listClone;
+    });
+  };
+
+  const removeOneExercise = (exerciseId: string) => {
+    setExercisesToAdd((prev) => {
+      return prev.filter((e) => e !== exerciseId);
+    });
+  };
+
+  const hasBeenSelected = (exerciseId: string) => {
+    return exercisesToAdd.includes(exerciseId);
+  };
+
+  return {
+    isAdding,
+    setIsAdding,
+    exercisesToAdd,
+    setExercisesToAdd,
+    addOneExercise,
+    removeOneExercise,
+    hasBeenSelected,
+  };
+};
