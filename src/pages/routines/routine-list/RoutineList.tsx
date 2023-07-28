@@ -8,6 +8,7 @@ import { fetchApi } from "../../../utils/fetch-util";
 
 export default function RoutineList() {
   const [routineList, setRoutineList] = useState<RoutineDto[]>([]);
+  const [editMode, setEditMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,7 +25,6 @@ export default function RoutineList() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
         setRoutineList(data);
       } else if (response.status === 401) {
         navigate("/auth/signin");
@@ -40,6 +40,10 @@ export default function RoutineList() {
     navigate("/routines/add");
   };
 
+  const handleEditButton = () => {
+    setEditMode(!editMode);
+  };
+
   return (
     <>
       <TopNav showBackButton={false} navText="Routines" />
@@ -51,12 +55,23 @@ export default function RoutineList() {
           >
             Add
           </button>
-          <button className="edit-button routine-button">Edit</button>
+          <button
+            onClick={handleEditButton}
+            className={`${
+              editMode ? "edit-button" : "end-button"
+            } edit-button routine-button`}
+          >
+            {editMode ? "Stop Editing" : "Edit"}
+          </button>
         </div>
         <div className="routine-list-container">
           {routineList.length > 0 &&
             routineList.map((routine) => (
-              <RoutineItem routine={routine} key={routine._id} />
+              <RoutineItem
+                routine={routine}
+                key={routine._id}
+                editMode={editMode}
+              />
             ))}
         </div>
       </div>
@@ -64,8 +79,16 @@ export default function RoutineList() {
   );
 }
 
-type RoutineItemProps = { routine: RoutineDto };
+type RoutineItemProps = { routine: RoutineDto; editMode: boolean };
 function RoutineItem(props: RoutineItemProps) {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate("/routines/edit", {
+      state: props.routine,
+    });
+  };
+
   return (
     <Link
       to={"/routines/detail"}
@@ -73,7 +96,13 @@ function RoutineItem(props: RoutineItemProps) {
       className="routine-container"
     >
       <p className="routine-name">{props.routine.name}</p>
-      <div className="routine-arrow-container">--&gt;</div>
+      {props.editMode ? (
+        <button onClick={handleEdit} className="edit-button">
+          Edit
+        </button>
+      ) : (
+        <div className="routine-arrow-container">--&gt;</div>
+      )}
     </Link>
   );
 }

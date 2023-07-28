@@ -18,6 +18,7 @@ import Settings from "./pages/settings/Settings";
 import Log from "./pages/log/Log";
 import { TimerProvider } from "./context/timer-context";
 import { AddExerciseProvider } from "./context/add-exercise-context";
+import EditRoutine from "./pages/routines/edit-routine/EditRoutine";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "/routines", element: <RoutineList /> },
       { path: "/routines/add", element: <AddRoutine /> },
       { path: "/routines/detail", element: <RoutineDetail /> },
+      { path: "/routines/edit", element: <EditRoutine /> },
       { path: "/exercises", element: <ExerciseList /> },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
       { path: "/exercises/detail", element: <ExerciseDetail /> },
