@@ -17,6 +17,7 @@ import SignUp from "./pages/auth/sign-up/SignUp";
 import Settings from "./pages/settings/Settings";
 import Log from "./pages/log/Log";
 import { TimerProvider } from "./context/timer-context";
+import { AddExerciseProvider } from "./context/add-exercise-context";
 
 // Use child routes off "/" to render all child elements
 // through App element
@@ -45,7 +46,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ExerciseProvider>
       <UserProvider>
         <TimerProvider>
-          <RouterProvider router={router} />
+          <AddExerciseProvider>
+            <RouterProvider router={router} />
+          </AddExerciseProvider>
         </TimerProvider>
       </UserProvider>
     </ExerciseProvider>

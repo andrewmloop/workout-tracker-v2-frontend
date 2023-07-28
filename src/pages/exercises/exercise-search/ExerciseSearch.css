@@ -40,3 +40,15 @@
 .exercise-container:last-child {
   border-bottom: none;
 }
+
+.exercise-link {
+  width: 100%;
+}
+
+.add-button {
+  background-color: green;
+}
+
+.remove-button {
+  background-color: red;
+}
