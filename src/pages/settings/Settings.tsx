@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./Settings.css";
+
 import { ROUTES } from "../../utils/route-enums";
 import TopNav from "../../components/top-nav/TopNav";
 import { fetchApi } from "../../utils/fetch-util";
