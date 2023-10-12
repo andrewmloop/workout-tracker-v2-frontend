@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { RoutineDto } from "../../../entities/routine";
+import { RoutineDTO } from "../../../entities/routine";
 import { ROUTES } from "../../../utils/route-enums";
-import "./RoutineList.css";
 import { Link, useNavigate } from "react-router-dom";
 import TopNav from "../../../components/top-nav/TopNav";
-import { fetchApi } from "../../../utils/fetch-util";
+import { fetchApi, handleResponse } from "../../../utils/fetch-util";
+import { useRoutineContext } from "../../../context/routine-context";
 
+import "./RoutineList.css";
+
+/**
+ * A list component that displays the logged in user's routines.
+ */
 export default function RoutineList() {
-  const [routineList, setRoutineList] = useState<RoutineDto[]>([]);
-  const [editMode, setEditMode] = useState(false);
-
   const navigate = useNavigate();
+  const { routineList, setRoutineList } = useRoutineContext();
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     fetchRoutines();
@@ -22,15 +26,7 @@ export default function RoutineList() {
         credentials: "include",
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setRoutineList(data);
-      } else if (response.status === 401) {
-        navigate("/auth/signin");
-      } else {
-        throw new Error(data.message);
-      }
+      await handleResponse(response, setRoutineList);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -79,7 +75,7 @@ export default function RoutineList() {
   );
 }
 
-type RoutineItemProps = { routine: RoutineDto; editMode: boolean };
+type RoutineItemProps = { routine: RoutineDTO; editMode: boolean };
 function RoutineItem(props: RoutineItemProps) {
   const navigate = useNavigate();
 
