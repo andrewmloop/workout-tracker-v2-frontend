@@ -1,4 +1,4 @@
-export interface RoutineDto {
+export interface RoutineDTO {
   _id: string;
   name: string;
   description: string;
