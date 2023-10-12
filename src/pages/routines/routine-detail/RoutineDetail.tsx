@@ -1,11 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./RoutineDetail.css";
-import { RoutineDto } from "../../../entities/routine";
+import { RoutineDTO } from "../../../entities/routine";
 import { useEffect, useState } from "react";
 import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useAddExerciseContext } from "../../../context/add-exercise-context";
-import { fetchApi } from "../../../utils/fetch-util";
+import { fetchApi, handleResponse } from "../../../utils/fetch-util";
 import { ROUTES } from "../../../utils/route-enums";
 
 interface RoutineItemState {
@@ -18,7 +18,7 @@ interface RoutineItemState {
 export default function RoutineDetail() {
   // Get routine passed from previous route
   const location = useLocation();
-  const routine: RoutineDto = location.state;
+  const routine: RoutineDTO = location.state;
   const navigate = useNavigate();
 
   const { isAdding, setIsAdding, exercisesToAdd, setExercisesToAdd } =
@@ -82,16 +82,7 @@ export default function RoutineDetail() {
         }
       );
 
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log(data);
-        setRoutineState(data);
-      } else if (response.status === 401) {
-        navigate("/auth/signin");
-      } else {
-        throw new Error(data);
-      }
+      await handleResponse(response, setRoutineState);
     } catch (error: any) {
       console.log(error.message);
     } finally {

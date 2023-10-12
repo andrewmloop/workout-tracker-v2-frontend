@@ -6,7 +6,7 @@ import { ROUTES } from "../../utils/route-enums";
 import { LogDto } from "../../entities/log";
 import TopNav from "../../components/top-nav/TopNav";
 import RestTimer from "../../components/rest-timer/RestTimer";
-import { fetchApi } from "../../utils/fetch-util";
+import { fetchApi, handleResponse } from "../../utils/fetch-util";
 
 const FORM_VALUES = ["good", "okay", "poor"];
 
@@ -39,15 +39,7 @@ export default function Log() {
         credentials: "include",
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setLogList(data);
-      } else if (response.status === 401) {
-        navigate("/auth/signin");
-      } else {
-        throw new Error(data);
-      }
+      await handleResponse(response, setLogList);
     } catch (error: any) {
       console.log(error.message);
     }

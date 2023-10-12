@@ -3,12 +3,12 @@ import { ROUTES } from "../../../utils/route-enums";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./EditRoutine.css";
 import TopNav from "../../../components/top-nav/TopNav";
-import { fetchApi } from "../../../utils/fetch-util";
-import { RoutineDto } from "../../../entities/routine";
+import { fetchApi, handleResponse } from "../../../utils/fetch-util";
+import { RoutineDTO } from "../../../entities/routine";
 
 export default function EditRoutine() {
   const location = useLocation();
-  const routine: RoutineDto = location.state;
+  const routine: RoutineDTO = location.state;
 
   const [name, setName] = useState(routine.name);
   const [error, setError] = useState("");
