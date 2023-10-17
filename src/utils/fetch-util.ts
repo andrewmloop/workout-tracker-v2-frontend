@@ -17,27 +17,3 @@ export async function fetchApi(
 
   return await fetch(fullURL, options);
 }
-
-/**
- * Handles a response. Invokes passed in callback for
- * a 200. Navigates back to /signin page for a 401. Throws
- * an error for all other cases.
- *
- * @param response The response to handle
- * @param callback The callback to invoke for a
- * successful response
- */
-export async function handleResponse(
-  response: Response,
-  callback: any
-): Promise<void> {
-  const data = await response.json();
-  if (response.ok) {
-    callback(data);
-  } else if (response.status === 401) {
-    const navigate = useNavigate();
-    navigate("/auth/signin");
-  } else {
-    throw new Error(data.message);
-  }
-}

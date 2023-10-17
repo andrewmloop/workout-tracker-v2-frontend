@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { RoutineDTO } from "../../../entities/routine";
-import { ROUTES } from "../../../utils/route-enums";
 import { Link, useNavigate } from "react-router-dom";
 import TopNav from "../../../components/top-nav/TopNav";
-import { fetchApi, handleResponse } from "../../../utils/fetch-util";
 import { useRoutineContext } from "../../../context/routine-context";
+import { getAllRoutines } from "../../../services/routine-service";
 
 import "./RoutineList.css";
 
@@ -22,11 +21,8 @@ export default function RoutineList() {
 
   const fetchRoutines = async () => {
     try {
-      const response = await fetchApi(ROUTES.ROUTINE, {
-        credentials: "include",
-      });
-
-      await handleResponse(response, setRoutineList);
+      const routines = await getAllRoutines();
+      if (routines) setRoutineList(routines);
     } catch (error: any) {
       console.log(error.message);
     }

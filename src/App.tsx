@@ -3,9 +3,7 @@ import Navbar from "./components/navbar/Navbar";
 import "./App.css";
 import { useExerciseContext } from "./context/exercise-context";
 import { useEffect } from "react";
-import { ExerciseDto } from "./entities/exercise";
-import { ROUTES } from "./utils/route-enums";
-import { fetchApi } from "./utils/fetch-util";
+import { fetchAllExercises } from "./services/exercise-service";
 
 export default function App() {
   // Fetch exercise list on app open and store in context
@@ -19,12 +17,8 @@ export default function App() {
 
   async function fetchExercises(): Promise<void> {
     try {
-      const response = await fetchApi(ROUTES.EXERCISE, {
-        credentials: "include",
-      });
-      const data: ExerciseDto[] = await response.json();
-
-      setExerciseList(data);
+      const exercises = await fetchAllExercises();
+      setExerciseList(exercises);
     } catch (error) {
       console.error(error);
     }
