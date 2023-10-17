@@ -93,22 +93,36 @@ function Exercise(props: ExerciseProps) {
         <p className="exercise-text">{exercise.name}</p>
       </Link>
 
-      {isAdding && isSelected ? (
-        <button
-          className="remove-button"
-          onClick={() => removeOneExercise(exercise._id)}
-        >
-          Remove
-        </button>
-      ) : (
-        <button
-          className="add-button"
-          onClick={() => addOneExercise(exercise._id)}
-        >
-          Add
-        </button>
-      )}
+      {isAdding &&
+        (isSelected ? (
+          <ExerciseButton
+            buttonText="Remove"
+            onClick={() => removeOneExercise(exercise._id)}
+            cssClass="remove-button"
+          />
+        ) : (
+          <ExerciseButton
+            buttonText="Add"
+            onClick={() => addOneExercise(exercise._id)}
+            cssClass="add-button"
+          />
+        ))}
     </div>
+  );
+}
+
+type ExerciseButtonProps = {
+  buttonText: string;
+  onClick: any;
+  cssClass: string;
+};
+function ExerciseButton(props: ExerciseButtonProps) {
+  return (
+    <>
+      <button onClick={props.onClick} className={props.cssClass}>
+        {props.buttonText}
+      </button>
+    </>
   );
 }
 
