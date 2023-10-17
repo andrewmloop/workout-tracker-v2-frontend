@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ExerciseDto } from "../../../entities/exercise";
-import "./ExerciseSearch.css";
 import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useAddExerciseContext } from "../../../context/add-exercise-context";
+import FinishAddingButton from "../../../components/finish-adding-button/FinishAddingButton";
+
+import "./ExerciseSearch.css";
 
 export default function ExerciseSearch() {
   const params = useParams();
   const muscle = params.muscle || "all";
 
-  const { isAdding, setExercisesToAdd } = useAddExerciseContext();
+  const { isAdding } = useAddExerciseContext();
   // List of exercises fetched when user logins
   const { exerciseList } = useExerciseContext();
   // Filtered list to exercises that only contain the route's designated
@@ -54,6 +56,7 @@ export default function ExerciseSearch() {
         }
       />
       <div className="exercise-search-page page-container">
+        {isAdding && <FinishAddingButton />}
         <div className="search-container">
           <input
             type="text"

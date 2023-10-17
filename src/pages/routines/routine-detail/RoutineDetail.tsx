@@ -1,12 +1,13 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./RoutineDetail.css";
 import { RoutineDTO } from "../../../entities/routine";
 import { useEffect, useState } from "react";
 import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useAddExerciseContext } from "../../../context/add-exercise-context";
-import { fetchApi, handleResponse } from "../../../utils/fetch-util";
-import { ROUTES } from "../../../utils/route-enums";
+import FinishAddingButton from "../../../components/finish-adding-button/FinishAddingButton";
+import { useRoutineContext } from "../../../context/routine-context";
+
+import "./RoutineDetail.css";
 
 interface RoutineItemState {
   exerciseId: string;
@@ -19,27 +20,26 @@ export default function RoutineDetail() {
   // Get routine passed from previous route
   const location = useLocation();
   const routine: RoutineDTO = location.state;
-  const navigate = useNavigate();
 
-  const { isAdding, setIsAdding, exercisesToAdd, setExercisesToAdd } =
+  const navigate = useNavigate();
+  const { isAdding, setIsAdding, setExercisesToAdd, setRoutineId } =
     useAddExerciseContext();
+  const { routineList } = useRoutineContext();
   // Get the list of exercises and build a populated list from
   // exerciseIds in routine's "exercises" field
   const { exerciseList } = useExerciseContext();
-
-  const [routineState, setRoutineState] = useState(routine);
   const [routineExerciseList, setRoutineExerciseList] = useState<
     RoutineItemState[]
   >([]);
 
   useEffect(() => {
     populateRoutineExercises();
-  }, [routineState]);
+  }, [routineList]);
 
   const populateRoutineExercises = () => {
     const list: RoutineItemState[] = [];
 
-    for (let exercise of routineState.exercises) {
+    for (let exercise of routine.exercises) {
       let fullExercise = exerciseList.find(
         (e) => e._id === exercise.exerciseId
       );
@@ -57,44 +57,17 @@ export default function RoutineDetail() {
   const handleAddExercise = () => {
     setIsAdding(true);
     setExercisesToAdd([]);
+    setRoutineId(routine._id);
     navigate("/exercises");
-  };
-
-  const handleAddComplete = async () => {
-    setIsAdding(false);
-
-    try {
-      const method = "POST";
-      const headers = {
-        "Content-Type": "application/json",
-      };
-      const body = JSON.stringify({
-        exerciseIds: exercisesToAdd,
-      });
-
-      const response = await fetchApi(
-        ROUTES.ROUTINE_ID_ADD.replace(":id", routineState._id),
-        {
-          method: method,
-          headers: headers,
-          body: body,
-          credentials: "include",
-        }
-      );
-
-      await handleResponse(response, setRoutineState);
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      setExercisesToAdd([]);
-    }
   };
 
   const handleEditRoutine = () => {
     return;
   };
 
-  const handleEditTargets = () => {};
+  const handleEditTargets = () => {
+    return;
+  };
 
   return (
     <>
@@ -105,12 +78,7 @@ export default function RoutineDetail() {
         </div>
         <div className="routine-desc-buttons-container">
           {isAdding ? (
-            <button
-              className="complete-button desc-button"
-              onClick={handleAddComplete}
-            >
-              Complete
-            </button>
+            <FinishAddingButton />
           ) : (
             <button
               onClick={handleAddExercise}

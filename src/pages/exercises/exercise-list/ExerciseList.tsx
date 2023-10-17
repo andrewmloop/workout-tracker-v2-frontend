@@ -1,7 +1,9 @@
+import FinishAddingButton from "../../../components/finish-adding-button/FinishAddingButton";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useAddExerciseContext } from "../../../context/add-exercise-context";
-import "./ExerciseList.css";
 import { Link } from "react-router-dom";
+
+import "./ExerciseList.css";
 
 export default function ExerciseList() {
   const { isAdding } = useAddExerciseContext();
@@ -12,6 +14,7 @@ export default function ExerciseList() {
         navText={isAdding ? "Add Exercises" : "Exercises"}
       />
       <div className="exercise-list-page page-container">
+        {isAdding && <FinishAddingButton />}
         <ListItem itemName="All Exercises" muscle="all" />
         <ListItem itemName="Abdominals" muscle="abdominals" />
         <ListItem itemName="Abductors" muscle="abductors" />

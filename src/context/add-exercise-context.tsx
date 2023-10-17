@@ -18,6 +18,8 @@ interface IAddExerciseContext {
   setIsAdding: Dispatch<SetStateAction<boolean>>;
   exercisesToAdd: string[];
   setExercisesToAdd: Dispatch<SetStateAction<string[]>>;
+  routineId: string;
+  setRoutineId: Dispatch<SetStateAction<string>>;
 }
 
 const AddExerciseContext = createContext<IAddExerciseContext>({
@@ -25,15 +27,25 @@ const AddExerciseContext = createContext<IAddExerciseContext>({
   setIsAdding: () => {},
   exercisesToAdd: [],
   setExercisesToAdd: () => {},
+  routineId: "",
+  setRoutineId: () => {},
 });
 
 export function AddExerciseProvider({ children }: any) {
   const [isAdding, setIsAdding] = useState(false);
   const [exercisesToAdd, setExercisesToAdd] = useState<string[]>([]);
+  const [routineId, setRoutineId] = useState<string>("");
 
   return (
     <AddExerciseContext.Provider
-      value={{ isAdding, setIsAdding, exercisesToAdd, setExercisesToAdd }}
+      value={{
+        isAdding,
+        setIsAdding,
+        exercisesToAdd,
+        setExercisesToAdd,
+        routineId,
+        setRoutineId,
+      }}
     >
       {children}
     </AddExerciseContext.Provider>
@@ -41,8 +53,14 @@ export function AddExerciseProvider({ children }: any) {
 }
 
 export const useAddExerciseContext = () => {
-  const { isAdding, setIsAdding, exercisesToAdd, setExercisesToAdd } =
-    useContext(AddExerciseContext);
+  const {
+    isAdding,
+    setIsAdding,
+    exercisesToAdd,
+    setExercisesToAdd,
+    routineId,
+    setRoutineId,
+  } = useContext(AddExerciseContext);
 
   const addOneExercise = (exerciseId: string) => {
     setExercisesToAdd((prev) => {
@@ -67,6 +85,8 @@ export const useAddExerciseContext = () => {
     setIsAdding,
     exercisesToAdd,
     setExercisesToAdd,
+    routineId,
+    setRoutineId,
     addOneExercise,
     removeOneExercise,
     hasBeenSelected,
