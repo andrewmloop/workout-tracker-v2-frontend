@@ -1,19 +1,17 @@
 import { useNavigate } from "react-router-dom";
-
-import { ROUTES } from "../../utils/route-enums";
 import TopNav from "../../components/top-nav/TopNav";
-import { fetchApi } from "../../utils/fetch-util";
+import { getSignOut } from "../../services/auth-service";
+
+import "./Settings.css";
 
 export default function Settings() {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
-      const response = await fetchApi(ROUTES.SIGN_OUT, {
-        credentials: "include",
-      });
+      const hasBeenSignedOut = await getSignOut();
 
-      if (response.ok || response.status === 401) {
+      if (hasBeenSignedOut) {
         navigate("/auth/signin");
       } else {
         throw new Error("Unable to sign out");

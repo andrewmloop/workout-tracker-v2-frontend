@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./SignIn.css";
 import { FormEvent, useState } from "react";
-import { ROUTES } from "../../../utils/route-enums";
 import { useUserContext } from "../../../context/user-context";
-import { UserDto } from "../../../entities/user";
-import { fetchApi } from "../../../utils/fetch-util";
+import { postSignIn } from "../../../services/auth-service";
+
+import "./SignIn.css";
 
 export default function SignIn() {
   const { setUserStore } = useUserContext();
@@ -31,30 +30,20 @@ export default function SignIn() {
     }
 
     setLoading(true);
+
     try {
-      const method = "POST";
-      const headers = {
-        "Content-Type": "application/json",
-      };
       const body = JSON.stringify({
         email: email,
         password: password,
       });
 
-      const response = await fetchApi(ROUTES.SIGN_IN, {
-        method: method,
-        headers: headers,
-        body: body,
-        credentials: "include",
-      });
+      const data = await postSignIn(body);
 
-      if (response.ok) {
-        const data = await response.json();
-        const user: UserDto = data.user;
-        setUserStore(user);
-        navigate("/routines");
-      } else {
+      if (data instanceof Error) {
         throw new Error("Invalid email or password");
+      } else {
+        setUserStore(data);
+        navigate("/routines");
       }
     } catch (error: any) {
       setError(error.message);
