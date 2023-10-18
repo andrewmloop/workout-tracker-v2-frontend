@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { ROUTES } from "../../../utils/route-enums";
 import { useNavigate } from "react-router-dom";
-import "./AddRoutine.css";
 import TopNav from "../../../components/top-nav/TopNav";
-import { fetchApi } from "../../../utils/fetch-util";
+import { postRoutine } from "../../../services/routine-service";
+import { UnauthorizedError } from "../../../entities/unauthorized-error";
+
+import "./AddRoutine.css";
 
 export default function AddRoutine() {
   const [name, setName] = useState("");
@@ -23,28 +24,14 @@ export default function AddRoutine() {
     setLoading(true);
 
     try {
-      const method = "POST";
-      const headers = {
-        "Content-Type": "application/json",
-      };
-      const body = JSON.stringify({
-        name: name,
-      });
+      const data = await postRoutine(name);
 
-      const response = await fetchApi(ROUTES.ROUTINE, {
-        method: method,
-        headers: headers,
-        body: body,
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        navigate("/routines");
+      if (data instanceof UnauthorizedError) {
+        navigate("/auth/signin");
+      } else if (data instanceof Error) {
+        setError(data.message);
       } else {
-        console.log(data);
-        setError(data.message[0]);
+        navigate("/routines");
       }
     } catch (error) {
       setError(error as string);

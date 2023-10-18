@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useRoutineContext } from "../../../context/routine-context";
 import { getAllRoutines } from "../../../services/routine-service";
+import { UnauthorizedError } from "../../../entities/unauthorized-error";
 
 import "./RoutineList.css";
 
@@ -21,8 +22,15 @@ export default function RoutineList() {
 
   const fetchRoutines = async () => {
     try {
-      const routines = await getAllRoutines();
-      if (routines) setRoutineList(routines);
+      const data = await getAllRoutines();
+
+      if (data instanceof UnauthorizedError) {
+        navigate("/auth/signin");
+      } else if (data instanceof Error) {
+        throw data;
+      } else {
+        setRoutineList(data);
+      }
     } catch (error: any) {
       console.log(error.message);
     }

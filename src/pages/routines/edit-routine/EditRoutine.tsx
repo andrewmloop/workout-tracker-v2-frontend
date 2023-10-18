@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { ROUTES } from "../../../utils/route-enums";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./EditRoutine.css";
 import TopNav from "../../../components/top-nav/TopNav";
-import { fetchApi, handleResponse } from "../../../utils/fetch-util";
 import { RoutineDTO } from "../../../entities/routine";
+import { patchRoutine } from "../../../services/routine-service";
+import { UnauthorizedError } from "../../../entities/unauthorized-error";
+
+import "./EditRoutine.css";
 
 export default function EditRoutine() {
   const location = useLocation();
@@ -27,29 +28,14 @@ export default function EditRoutine() {
     setLoading(true);
 
     try {
-      const method = "PATCH";
-      const headers = {
-        "Content-Type": "application/json",
-      };
-      const body = JSON.stringify({
-        name: name,
-      });
+      const data = await patchRoutine(routine._id, name);
 
-      const response = await fetchApi(ROUTES.ROUTINE + routine._id, {
-        method: method,
-        headers: headers,
-        body: body,
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        navigate("/routines");
-      } else if (response.status === 401) {
+      if (data instanceof UnauthorizedError) {
         navigate("/auth/signin");
+      } else if (data instanceof Error) {
+        setError(data.message);
       } else {
-        setError(data.message[0]);
+        navigate("/routines");
       }
     } catch (error) {
       setError(error as string);
