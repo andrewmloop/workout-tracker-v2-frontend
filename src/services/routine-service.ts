@@ -31,18 +31,18 @@ export async function patchRoutine(
     name: name,
   });
 
-  const reponse = await fetchApi(ROUTES.ROUTINE + id, {
+  const response = await fetchApi(ROUTES.ROUTINE + id, {
     method: method,
     headers: headers,
     body: body,
     credentials: "include",
   });
 
-  const data = await reponse.json();
+  const data = await response.json();
 
-  if (reponse.ok) {
+  if (response.ok) {
     return data as RoutineDTO;
-  } else if (reponse.status === 401) {
+  } else if (response.status === 401) {
     return new UnauthorizedError();
   } else {
     return new Error(data.message);

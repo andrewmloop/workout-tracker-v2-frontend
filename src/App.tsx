@@ -17,8 +17,13 @@ export default function App() {
 
   async function fetchExercises(): Promise<void> {
     try {
-      const exercises = await fetchAllExercises();
-      setExerciseList(exercises);
+      const data = await fetchAllExercises();
+
+      if (data instanceof Error) {
+        throw data;
+      } else {
+        setExerciseList(data);
+      }
     } catch (error) {
       console.error(error);
     }
