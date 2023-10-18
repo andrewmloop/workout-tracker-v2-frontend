@@ -1,12 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import "./Log.css";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/user-context";
-import { ROUTES } from "../../utils/route-enums";
 import { LogDto } from "../../entities/log";
 import TopNav from "../../components/top-nav/TopNav";
 import RestTimer from "../../components/rest-timer/RestTimer";
-import { fetchApi, handleResponse } from "../../utils/fetch-util";
+import { getLogsForExerciseId, postNewLog } from "../../services/log-service";
+import { UnauthorizedError } from "../../entities/unauthorized-error";
+
+import "./Log.css";
 
 const FORM_VALUES = ["good", "okay", "poor"];
 
@@ -35,11 +36,15 @@ export default function Log() {
 
   const fetchLogs = async () => {
     try {
-      const response = await fetchApi(ROUTES.LOG_EXERCISE + exerciseId, {
-        credentials: "include",
-      });
+      const data = await getLogsForExerciseId(exerciseId);
 
-      await handleResponse(response, setLogList);
+      if (data instanceof UnauthorizedError) {
+        navigate("/auth/signin");
+      } else if (data instanceof Error) {
+        throw data;
+      } else {
+        setLogList(data);
+      }
     } catch (error: any) {
       console.log(error.message);
     }
@@ -60,10 +65,6 @@ export default function Log() {
   const handleSubmit = async () => {
     if (weightInput === "" || repsInput === "") return;
 
-    const method = "POST";
-    const headers = {
-      "Content-Type": "application/json",
-    };
     const body = {
       exerciseId: exerciseId,
       reps: +repsInput,
@@ -77,25 +78,18 @@ export default function Log() {
     };
 
     try {
-      const response = await fetchApi(ROUTES.LOG, {
-        method: method,
-        headers: headers,
-        body: JSON.stringify(body),
-        credentials: "include",
-      });
+      const data = await postNewLog(body);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (data instanceof UnauthorizedError) {
+        navigate("/auth/signin");
+      } else if (data instanceof Error) {
+        throw data;
+      } else {
         setLogList((prev) => {
           const list = JSON.parse(JSON.stringify(prev));
           list.unshift(data);
           return list;
         });
-      } else if (response.status === 401) {
-        navigate("/auth/signin");
-      } else {
-        throw new Error(data);
       }
     } catch (error: any) {
       console.log(error.message);
