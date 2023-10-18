@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./SignUp.css";
 import { useUserContext } from "../../../context/user-context";
 import { FormEvent, useState } from "react";
-import { ROUTES } from "../../../utils/route-enums";
-import { UserDto } from "../../../entities/user";
-import { fetchApi } from "../../../utils/fetch-util";
+import { postNewUser } from "../../../services/user-service";
+
+import "./SignUp.css";
 
 export default function SignUp() {
   const { setUserStore } = useUserContext();
@@ -86,34 +85,23 @@ export default function SignUp() {
 
     setLoading(true);
 
+    // TODO: Remove this artificial 1 second delay
     await new Promise((f) => setTimeout(f, 1000));
 
     try {
-      const method = "POST";
-      const headers = {
-        "Content-Type": "application/json",
-      };
       const body = JSON.stringify({
         firstName: firstName,
         email: email,
         password: password,
       });
 
-      const response = await fetchApi(ROUTES.USER, {
-        method: method,
-        headers: headers,
-        body: body,
-        credentials: "include",
-      });
+      const data = await postNewUser(body);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        const user: UserDto = data.user;
-        setUserStore(user);
-        navigate("/routines");
+      if (data instanceof Error) {
+        throw data;
       } else {
-        throw new Error(data.message);
+        setUserStore(data);
+        navigate("/routines");
       }
     } catch (error: any) {
       setErrors({
