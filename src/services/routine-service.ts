@@ -75,3 +75,36 @@ export async function postRoutine(name: string): Promise<RoutineDTO | Error> {
     return new Error(data.message);
   }
 }
+
+export async function postNewExercisesForRoutine(
+  routineId: string,
+  exerciseIdsToAdd: string[]
+): Promise<RoutineDTO | Error> {
+  const method = "POST";
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  const body = JSON.stringify({
+    exerciseIds: exerciseIdsToAdd,
+  });
+
+  const response = await fetchApi(
+    ROUTES.ROUTINE_ID_ADD.replace(":id", routineId),
+    {
+      method: method,
+      headers: headers,
+      body: body,
+      credentials: "include",
+    }
+  );
+
+  const data = await response.json();
+
+  if (response.ok) {
+    return data as RoutineDTO;
+  } else if (response.status === 401) {
+    return new UnauthorizedError();
+  } else {
+    return new Error(data.message);
+  }
+}

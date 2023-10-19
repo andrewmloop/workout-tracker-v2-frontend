@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useAddExerciseContext } from "../../context/add-exercise-context";
-import { fetchApi, handleResponse } from "../../utils/fetch-util";
-import { ROUTES } from "../../utils/route-enums";
 import { useRoutineContext } from "../../context/routine-context";
+import { postNewExercisesForRoutine } from "../../services/routine-service";
+import { UnauthorizedError } from "../../entities/unauthorized-error";
 
 import "./FinishAddingButton.css";
 
@@ -10,29 +10,19 @@ export default function FinishAddingButton() {
   const navigate = useNavigate();
   const { setIsAdding, exercisesToAdd, setExercisesToAdd, routineId } =
     useAddExerciseContext();
-  const { setRoutineList } = useRoutineContext();
+  const { updateRoutine } = useRoutineContext();
 
   const handleFinish = async () => {
     try {
-      const method = "POST";
-      const headers = {
-        "Content-Type": "application/json",
-      };
-      const body = JSON.stringify({
-        exerciseIds: exercisesToAdd,
-      });
+      const data = await postNewExercisesForRoutine(routineId, exercisesToAdd);
 
-      const response = await fetchApi(
-        ROUTES.ROUTINE_ID_ADD.replace(":id", routineId),
-        {
-          method: method,
-          headers: headers,
-          body: body,
-          credentials: "include",
-        }
-      );
-
-      await handleResponse(response, setRoutineList);
+      if (data instanceof UnauthorizedError) {
+        navigate("/auth/signin");
+      } else if (data instanceof Error) {
+        throw data;
+      } else {
+        updateRoutine(data);
+      }
     } catch (error: any) {
       console.log(error.message);
     } finally {

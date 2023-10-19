@@ -21,4 +21,15 @@ export function RoutineProvider({ children }: any) {
   );
 }
 
-export const useRoutineContext = () => useContext(RoutineContext);
+export const useRoutineContext = () => {
+  const { routineList, setRoutineList } = useContext(RoutineContext);
+
+  const updateRoutine = (updatedRoutine: RoutineDTO) => {
+    const updatedRoutineList = routineList.map((routineInList) =>
+      routineInList._id === updatedRoutine._id ? updatedRoutine : routineInList
+    );
+    setRoutineList(updatedRoutineList);
+  };
+
+  return { routineList, setRoutineList, updateRoutine };
+};
