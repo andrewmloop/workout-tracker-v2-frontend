@@ -3,7 +3,10 @@ import { RoutineDTO } from "../../../entities/routine";
 import { Link, useNavigate } from "react-router-dom";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useRoutineContext } from "../../../context/routine-context";
-import { getAllRoutines } from "../../../services/routine-service";
+import {
+  deleteRoutine,
+  getAllRoutines,
+} from "../../../services/routine-service";
 import { UnauthorizedError } from "../../../entities/unauthorized-error";
 
 import "./RoutineList.css";
@@ -15,6 +18,7 @@ export default function RoutineList() {
   const navigate = useNavigate();
   const { routineList, setRoutineList } = useRoutineContext();
   const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   useEffect(() => {
     fetchRoutines();
@@ -42,6 +46,12 @@ export default function RoutineList() {
 
   const handleEditButton = () => {
     setEditMode(!editMode);
+    setDeleteMode(false);
+  };
+
+  const handleDeleteButton = () => {
+    setEditMode(false);
+    setDeleteMode(!deleteMode);
   };
 
   return (
@@ -61,7 +71,15 @@ export default function RoutineList() {
               editMode ? "edit-button" : "end-button"
             } edit-button routine-button`}
           >
-            {editMode ? "Stop Editing" : "Edit"}
+            {editMode ? "Done" : "Edit"}
+          </button>
+          <button
+            onClick={handleDeleteButton}
+            className={`${
+              deleteMode ? "delete-button" : "end-button"
+            } delete-button routine-button`}
+          >
+            {deleteMode ? "Done" : "Delete"}
           </button>
         </div>
         <div className="routine-list-container">
@@ -71,6 +89,7 @@ export default function RoutineList() {
                 routine={routine}
                 key={routine._id}
                 editMode={editMode}
+                deleteMode={deleteMode}
               />
             ))}
         </div>
@@ -79,9 +98,14 @@ export default function RoutineList() {
   );
 }
 
-type RoutineItemProps = { routine: RoutineDTO; editMode: boolean };
+type RoutineItemProps = {
+  routine: RoutineDTO;
+  editMode: boolean;
+  deleteMode: boolean;
+};
 function RoutineItem(props: RoutineItemProps) {
   const navigate = useNavigate();
+  const { removeRoutine } = useRoutineContext();
 
   const handleEdit = () => {
     navigate("/routines/edit", {
@@ -89,20 +113,44 @@ function RoutineItem(props: RoutineItemProps) {
     });
   };
 
+  const handleDelete = async () => {
+    const isSuccessfulDelete = await deleteRoutine(props.routine._id);
+
+    try {
+      if (isSuccessfulDelete instanceof UnauthorizedError) {
+        navigate("/auth/signin");
+      } else if (isSuccessfulDelete instanceof Error || !isSuccessfulDelete) {
+        throw new Error(
+          `Unable to delete routine with id: ${props.routine._id}`
+        );
+      } else {
+        removeRoutine(props.routine._id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Link
-      to={"/routines/detail"}
-      state={props.routine}
-      className="routine-container"
-    >
-      <p className="routine-name">{props.routine.name}</p>
-      {props.editMode ? (
+    <div className="routine-container">
+      <Link
+        to={"/routines/detail"}
+        state={props.routine}
+        className="routine-link-container"
+      >
+        <p className="routine-name">{props.routine.name}</p>
+        {!props.editMode && !props.deleteMode && <p>--&gt;</p>}
+      </Link>
+      {props.editMode && (
         <button onClick={handleEdit} className="edit-button">
           Edit
         </button>
-      ) : (
-        <div className="routine-arrow-container">--&gt;</div>
       )}
-    </Link>
+      {props.deleteMode && (
+        <button onClick={handleDelete} className="delete-button">
+          Delete
+        </button>
+      )}
+    </div>
   );
 }

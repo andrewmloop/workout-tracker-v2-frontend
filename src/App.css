@@ -27,3 +27,15 @@
 .error-text {
   color: red;
 }
+
+.add-button {
+  background-color: green;
+}
+
+.remove-button {
+  background-color: darkred;
+}
+
+.delete-button {
+  background-color: darkred;
+}

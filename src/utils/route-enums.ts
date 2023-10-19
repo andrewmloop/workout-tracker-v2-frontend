@@ -1,4 +1,5 @@
 export enum ROUTES {
+  DELETE_ROUTINE = "routine/:id",
   EXERCISE = "exercise/",
   EXERCISE_MUSCLE = "exercise/muscle/",
   LOG = "log/",

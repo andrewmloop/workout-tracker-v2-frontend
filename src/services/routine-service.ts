@@ -108,3 +108,31 @@ export async function postNewExercisesForRoutine(
     return new Error(data.message);
   }
 }
+
+export async function deleteRoutine(
+  routineId: string
+): Promise<boolean | Error> {
+  const method = "DELETE";
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  const response = await fetchApi(
+    ROUTES.DELETE_ROUTINE.replace(":id", routineId),
+    {
+      method: method,
+      headers: headers,
+      credentials: "include",
+    }
+  );
+
+  const data = await response.json();
+
+  if (response.ok) {
+    return data as boolean;
+  } else if (response.status === 401) {
+    return new UnauthorizedError();
+  } else {
+    return new Error(data.message);
+  }
+}

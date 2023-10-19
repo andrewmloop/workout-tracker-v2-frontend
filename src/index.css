@@ -53,6 +53,7 @@ button {
   border-radius: var(--size-border-radius-button);
   border: 1px solid transparent;
   padding: 0.6rem 1.2rem;
+  min-width: 33%;
   font-size: 1rem;
   font-weight: 500;
   font-family: inherit;

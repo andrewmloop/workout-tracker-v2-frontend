@@ -31,5 +31,12 @@ export const useRoutineContext = () => {
     setRoutineList(updatedRoutineList);
   };
 
-  return { routineList, setRoutineList, updateRoutine };
+  const removeRoutine = (routineIdToRemove: string) => {
+    const updatedRoutineList = routineList.filter(
+      (routineInList) => routineInList._id !== routineIdToRemove
+    );
+    setRoutineList(updatedRoutineList);
+  };
+
+  return { routineList, setRoutineList, updateRoutine, removeRoutine };
 };
