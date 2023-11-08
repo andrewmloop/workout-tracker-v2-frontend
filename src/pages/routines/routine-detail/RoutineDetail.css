@@ -7,16 +7,18 @@
 .routine-desc-buttons-container {
   width: 100%;
 
+  margin-bottom: 1rem;
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .desc-button {
   width: 48%;
-  margin-bottom: 1rem;
 }
 
 .routine-exercise-list-container {

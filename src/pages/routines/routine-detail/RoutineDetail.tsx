@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RoutineDTO } from "../../../entities/routine";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useAddExerciseContext } from "../../../context/add-exercise-context";
@@ -8,8 +8,10 @@ import FinishAddingButton from "../../../components/finish-adding-button/FinishA
 import { useRoutineContext } from "../../../context/routine-context";
 
 import "./RoutineDetail.css";
+import { deleteExerciseFromRoutine } from "../../../services/routine-service";
 
 interface RoutineItemState {
+  routineId: string;
   exerciseId: string;
   exerciseName: string;
   sets: number;
@@ -24,13 +26,14 @@ export default function RoutineDetail() {
   const navigate = useNavigate();
   const { isAdding, setIsAdding, setExercisesToAdd, setRoutineId } =
     useAddExerciseContext();
-  const { routineList } = useRoutineContext();
+  const { routineList, getRoutineExercises } = useRoutineContext();
   // Get the list of exercises and build a populated list from
   // exerciseIds in routine's "exercises" field
   const { exerciseList } = useExerciseContext();
   const [routineExerciseList, setRoutineExerciseList] = useState<
     RoutineItemState[]
   >([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     populateRoutineExercises();
@@ -39,12 +42,15 @@ export default function RoutineDetail() {
   const populateRoutineExercises = () => {
     const list: RoutineItemState[] = [];
 
-    for (let exercise of routine.exercises) {
+    const routineExercises = getRoutineExercises(routine._id);
+
+    for (let exercise of routineExercises) {
       let fullExercise = exerciseList.find(
         (e) => e._id === exercise.exerciseId
       );
       if (fullExercise !== undefined)
         list.push({
+          routineId: routine._id,
           exerciseId: fullExercise._id,
           exerciseName: fullExercise.name,
           sets: exercise.sets,
@@ -56,16 +62,15 @@ export default function RoutineDetail() {
 
   const handleAddExercise = () => {
     setIsAdding(true);
+    setIsEditing(false);
     setExercisesToAdd([]);
     setRoutineId(routine._id);
     navigate("/exercises");
   };
 
   const handleEditRoutine = () => {
-    return;
-  };
-
-  const handleEditTargets = () => {
+    setIsAdding(false);
+    setIsEditing(!isEditing);
     return;
   };
 
@@ -91,13 +96,7 @@ export default function RoutineDetail() {
             onClick={handleEditRoutine}
             className="edit-button desc-button"
           >
-            Edit
-          </button>
-          <button
-            onClick={handleEditTargets}
-            className="targets-button desc-button"
-          >
-            Targets
+            {isEditing ? "Done" : "Edit"}
           </button>
         </div>
         <div className="routine-exercise-list-container">
@@ -106,10 +105,12 @@ export default function RoutineDetail() {
               return (
                 <RoutineExercise
                   key={exercise.exerciseId}
+                  routineId={routine._id}
                   exerciseId={exercise.exerciseId}
                   exerciseName={exercise.exerciseName}
                   sets={exercise.sets}
                   reps={exercise.reps}
+                  isEditing={isEditing}
                 />
               );
             })}
@@ -119,26 +120,29 @@ export default function RoutineDetail() {
   );
 }
 
-function RoutineExercise(props: RoutineItemState) {
+type RoutineExercisePropType = {
+  routineId: string;
+  exerciseId: string;
+  exerciseName: string;
+  sets: number;
+  reps: number;
+  isEditing: boolean;
+};
+function RoutineExercise(props: RoutineExercisePropType) {
   return (
     <div className="routine-exercise-container">
       <p className="routine-exercise-name">{props.exerciseName}</p>
-      <LogButton
-        exerciseId={props.exerciseId}
-        exerciseName={props.exerciseName}
-      />
-      {/* <input
-        type="text"
-        maxLength={4}
-        defaultValue={props.sets}
-        className="sets-input"
-      />
-      <input
-        type="text"
-        maxLength={4}
-        defaultValue={props.reps}
-        className="reps-input"
-      /> */}
+      {props.isEditing ? (
+        <DeleteExerciseButton
+          routineId={props.routineId}
+          exerciseId={props.exerciseId}
+        />
+      ) : (
+        <LogButton
+          exerciseId={props.exerciseId}
+          exerciseName={props.exerciseName}
+        />
+      )}
     </div>
   );
 }
@@ -149,5 +153,38 @@ function LogButton(props: LogButtonPropType) {
     <Link to={"/log"} state={props} className="log-button">
       Log
     </Link>
+  );
+}
+
+type DeleteExerciseButtonPropType = {
+  routineId: string;
+  exerciseId: string;
+};
+function DeleteExerciseButton(props: DeleteExerciseButtonPropType) {
+  const { updateRoutine } = useRoutineContext();
+
+  const handleDelete = async () => {
+    try {
+      const newRoutine = await deleteExerciseFromRoutine(
+        props.routineId,
+        props.exerciseId
+      );
+
+      if (newRoutine instanceof Error) {
+        throw newRoutine;
+      }
+
+      updateRoutine(newRoutine);
+      // TODO: Add successful delete notification
+    } catch (error) {
+      // TODO: Add unable to delete notification
+      console.log(error);
+    }
+  };
+
+  return (
+    <button onClick={handleDelete} className="delete-button">
+      Delete
+    </button>
   );
 }
