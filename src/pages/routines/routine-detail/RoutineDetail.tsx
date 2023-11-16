@@ -1,14 +1,14 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RoutineDTO } from "../../../entities/routine";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
 import { useAddExerciseContext } from "../../../context/add-exercise-context";
 import FinishAddingButton from "../../../components/finish-adding-button/FinishAddingButton";
 import { useRoutineContext } from "../../../context/routine-context";
+import { deleteExerciseFromRoutine } from "../../../services/routine-service";
 
 import "./RoutineDetail.css";
-import { deleteExerciseFromRoutine } from "../../../services/routine-service";
 
 interface RoutineItemState {
   routineId: string;
@@ -20,8 +20,7 @@ interface RoutineItemState {
 
 export default function RoutineDetail() {
   // Get routine passed from previous route
-  const location = useLocation();
-  const routine: RoutineDTO = location.state;
+  const { routineId } = useParams();
 
   const navigate = useNavigate();
   const { isAdding, setIsAdding, setExercisesToAdd, setRoutineId } =
@@ -34,15 +33,24 @@ export default function RoutineDetail() {
     RoutineItemState[]
   >([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [thisRoutine, setThisRoutine] = useState<RoutineDTO>();
 
   useEffect(() => {
     populateRoutineExercises();
   }, [routineList]);
 
   const populateRoutineExercises = () => {
+    if (routineId === undefined) {
+      return;
+    }
+
+    // Find routine in store by routineId from route param
+    const routine = routineList.find((routine) => routine._id === routineId);
+    setThisRoutine(routine);
+
     const list: RoutineItemState[] = [];
 
-    const routineExercises = getRoutineExercises(routine._id);
+    const routineExercises = getRoutineExercises(routineId);
 
     for (let exercise of routineExercises) {
       let fullExercise = exerciseList.find(
@@ -50,7 +58,7 @@ export default function RoutineDetail() {
       );
       if (fullExercise !== undefined)
         list.push({
-          routineId: routine._id,
+          routineId: routineId,
           exerciseId: fullExercise._id,
           exerciseName: fullExercise.name,
           sets: exercise.sets,
@@ -64,7 +72,7 @@ export default function RoutineDetail() {
     setIsAdding(true);
     setIsEditing(false);
     setExercisesToAdd([]);
-    setRoutineId(routine._id);
+    setRoutineId(routineId as string);
     navigate("/exercises");
   };
 
@@ -76,10 +84,10 @@ export default function RoutineDetail() {
 
   return (
     <>
-      <TopNav showBackButton={true} navText={routine.name} />
+      <TopNav showBackButton={true} navText={thisRoutine?.name} />
       <div className="routine-detail-page page-container">
         <div className="routine-description-container">
-          <p className="routine-description">{routine.description}</p>
+          <p className="routine-description">{thisRoutine?.description}</p>
         </div>
         <div className="routine-desc-buttons-container">
           {isAdding ? (
@@ -105,7 +113,7 @@ export default function RoutineDetail() {
               return (
                 <RoutineExercise
                   key={exercise.exerciseId}
-                  routineId={routine._id}
+                  routineId={routineId as string}
                   exerciseId={exercise.exerciseId}
                   exerciseName={exercise.exerciseName}
                   sets={exercise.sets}

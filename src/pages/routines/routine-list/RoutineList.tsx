@@ -134,8 +134,7 @@ function RoutineItem(props: RoutineItemProps) {
   return (
     <div className="routine-container">
       <Link
-        to={"/routines/detail"}
-        state={props.routine}
+        to={`/routines/detail/${props.routine._id}`}
         className="routine-link-container"
       >
         <p className="routine-name">{props.routine.name}</p>

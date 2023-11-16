@@ -3,7 +3,7 @@ import "./TopNav.css";
 
 export default function TopNav(props: {
   showBackButton: boolean;
-  navText: string;
+  navText: string | undefined;
 }) {
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ export default function TopNav(props: {
         )}
       </div>
       <div className="page-name-container">
-        <p className="page-name">{props.navText}</p>
+        <p className="page-name">{props.navText ? props.navText : "Routine"}</p>
       </div>
     </div>
   );

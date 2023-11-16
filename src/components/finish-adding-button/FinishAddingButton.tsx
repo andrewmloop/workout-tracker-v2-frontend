@@ -28,7 +28,7 @@ export default function FinishAddingButton() {
     } finally {
       setIsAdding(false);
       setExercisesToAdd([]);
-      navigate("/routines");
+      navigate(`/routines/detail/${routineId}`);
     }
   };
 
