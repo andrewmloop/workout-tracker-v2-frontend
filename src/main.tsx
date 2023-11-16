@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       { path: "/routines/edit", element: <EditRoutine /> },
       { path: "/exercises", element: <ExerciseList /> },
       { path: "/exercises/:muscle", element: <ExerciseSearch /> },
-      { path: "/exercises/detail", element: <ExerciseDetail /> },
+      { path: "/exercises/detail/:exerciseId", element: <ExerciseDetail /> },
       { path: "/log", element: <Log /> },
       { path: "/settings", element: <Settings /> },
     ],

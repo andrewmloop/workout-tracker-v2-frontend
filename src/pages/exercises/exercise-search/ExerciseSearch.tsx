@@ -89,7 +89,7 @@ function Exercise(props: ExerciseProps) {
 
   return (
     <div className="exercise-container">
-      <Link to="/exercises/detail" state={exercise} className="exercise-link">
+      <Link to={`/exercises/detail/${exercise._id}`} className="exercise-link">
         <p className="exercise-text">{exercise.name}</p>
       </Link>
 

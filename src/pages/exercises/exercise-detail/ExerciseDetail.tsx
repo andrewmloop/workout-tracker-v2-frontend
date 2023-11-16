@@ -1,31 +1,57 @@
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { ExerciseDto } from "../../../entities/exercise";
-import "./ExerciseDetail.css";
+import { useExerciseContext } from "../../../context/exercise-context";
 import TopNav from "../../../components/top-nav/TopNav";
 
+import "./ExerciseDetail.css";
+
 export default function ExerciseDetail() {
-  const location = useLocation();
-  const exercise: ExerciseDto = location.state;
+  const { exerciseId } = useParams();
+  const { exerciseList } = useExerciseContext();
+  const [thisExercise, setThisExercise] = useState<ExerciseDto>({
+    _id: "",
+    name: "",
+    level: "",
+    primaryMuscles: [],
+    secondaryMuscles: [],
+    equipment: "",
+    category: "",
+    instructions: [],
+  });
+
+  useEffect(() => {
+    fetchExercise();
+  }, []);
+
+  // Fetch exercise from the store using the exerciseId route param
+  const fetchExercise = () => {
+    const exercise = exerciseList.find((e) => e._id === exerciseId);
+    if (exercise) {
+      setThisExercise(exercise);
+    }
+  };
 
   return (
     <>
-      <TopNav showBackButton={true} navText={exercise.name} />
+      <TopNav showBackButton={true} navText={thisExercise.name} />
       <div className="exercise-detail-page page-container">
         <div className="exercise-info-container">
           <p className="exercise-info-header">Primary Muscles</p>
           <div className="muscle-container">
-            {exercise.primaryMuscles.map((muscle, index) => (
+            {thisExercise.primaryMuscles.map((muscle, index) => (
               <p key={index} className="muscle-tag">
                 {muscle.slice(0, 1).toUpperCase() + muscle.slice(1)}
               </p>
             ))}
           </div>
         </div>
-        {exercise.secondaryMuscles.length > 0 && (
+        {thisExercise.secondaryMuscles.length > 0 && (
           <div className="exercise-info-container">
             <p className="exercise-info-header">Secondary Muscles</p>
             <div className="muscle-container">
-              {exercise.secondaryMuscles.map((muscle, index) => (
+              {thisExercise.secondaryMuscles.map((muscle, index) => (
                 <p key={index} className="muscle-tag">
                   {muscle.slice(0, 1).toUpperCase() + muscle.slice(1)}
                 </p>
@@ -39,7 +65,7 @@ export default function ExerciseDetail() {
             <p className="level">
               {
                 { adv: "Advanced", int: "Intermediate", beg: "Beginner" }[
-                  exercise.level
+                  thisExercise.level
                 ]
               }
             </p>
@@ -47,16 +73,16 @@ export default function ExerciseDetail() {
           <div className="category-container">
             <p className="exercise-info-header">Category</p>
             <p className="level">
-              {exercise.category.slice(0, 1).toUpperCase() +
-                exercise.category.slice(1)}
+              {thisExercise.category.slice(0, 1).toUpperCase() +
+                thisExercise.category.slice(1)}
             </p>
           </div>
-          {exercise.equipment && (
+          {thisExercise.equipment && (
             <div className="equipment-container">
               <p className="exercise-info-header">Equipment</p>
               <p className="level">
-                {exercise.equipment.slice(0, 1).toUpperCase() +
-                  exercise.equipment.slice(1)}
+                {thisExercise.equipment.slice(0, 1).toUpperCase() +
+                  thisExercise.equipment.slice(1)}
               </p>
             </div>
           )}
@@ -64,8 +90,8 @@ export default function ExerciseDetail() {
         <div className="instructions-container">
           <p className="exercise-info-header">Instructions</p>
           <ol className="instructions-list">
-            {exercise.instructions.length > 0
-              ? exercise.instructions.map((instruction, index) => (
+            {thisExercise.instructions?.length > 0
+              ? thisExercise.instructions.map((instruction, index) => (
                   <li key={index} className="instructions">
                     {instruction}
                   </li>
